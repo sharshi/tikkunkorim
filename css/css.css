@@ -1,0 +1,434 @@
+@charset "utf-8";
+/* CSS Document */
+@font-face{
+	font-family: Guttman Stam;
+	src: url('../css/Guttman.ttf')
+}
+@font-face{
+	font-family: Shlomo semi Stam;
+	src: url('../css/ShlomosemiStam.ttf')
+}
+body{
+	direction:rtl;
+	background:#efdca9;
+}
+#sidebar{
+	padding-top:45px;
+	padding-bottom:45px;
+	margin: 0 auto;
+	max-width:900px;
+}
+
+#menu{text-align: center;}
+#menu li{
+	display:inline-block;
+	list-style: none;
+	line-height:60px;
+	font-size:25px;
+	word-wrap:break-word;
+	width:95%;
+	max-width:400px;
+	height:60px;
+	//border:1px solid #444444;
+	background:rgb(241,233,203);
+	margin: 5px;
+	font-family: Shlomo semi Stam;
+	color:#000;
+}
+ul, menu, dir {
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
+}
+#menubar{
+	position:fixed;
+	top:0;
+	width:100%;
+	height:50px;
+	background:rgb(241,233,203);
+	right:0;
+	border-bottom:1px solid black;
+}
+#menubar div{
+}
+#banner{
+	 width:100%;
+	 font-size: 30px;
+	 line-height:50px;
+	 text-align:center;
+	 font-family:Shlomo semi Stam;
+}
+.rb{
+	float:right;
+	font-size: 20px;
+	max-width: 70px;
+	height:50px;
+	font-size: 15px;
+	line-height:20px;
+	text-align: center;
+	background-size:40px 40px;
+}
+.bn{
+	height:50px;
+	font-size: 15px;
+	line-height:20px;
+	text-align: center;
+	background-size:40px 40px;
+}
+#parshnm{
+	padding-left:10px;
+}
+#but{
+	width:50px;
+	background-image: url('../p/grid1.png');
+    background-repeat:no-repeat;
+    background-position:center;
+}
+#backb{
+	width:50px;
+	background-image: url('../p/backb.png');
+	background-repeat:no-repeat;
+    background-position:center;
+}
+#nextali{
+	width:50px;
+	float: left;
+	background-image: url('../p/nextitem.png');
+	background-size:50px 50px;
+    background-repeat:no-repeat;
+    background-position:center;
+
+}
+#prevali{
+	width:50px;
+	float: left;
+	background-image: url('../p/previtem.png');
+	background-size:50px 50px;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
+#bottombar{
+	//display:none;
+	position:fixed;
+	bottom:0;
+	width:100%;
+	height:50px;
+	background:rgb(241,233,203);
+	right:0;
+	border-top:1px solid black;
+}
+#bottombar .set{
+	height:50px;
+	width:50px;
+	font-size: 15px;
+	line-height:50px;
+	text-align: center;
+	color: white;
+	background-image: url('../p/set.png');
+	background-size:50px 50px;
+}
+#bottombar .about{
+	height:50px;
+	width:50px;
+	font-size: 15px;
+	line-height:50px;
+	text-align: center;
+	color: white;
+	background-image: url('../p/about.png');
+	background-size:50px 50px;
+	float: left;
+	
+}
+#texttest{
+	text-align: justify;
+	margin: 0 auto;
+	max-width:1000px;
+	display:none;
+	padding-top:45px;
+	direction:rtl;
+	//font-family: Guttman stam;/*shlomo having issues on samsung and lg devices*/
+	font-family: Shlomo semi Stam;
+	column-width:400px;
+	font-size: 22px;
+	-moz-column-width:400px; /* Firefox */
+	-webkit-column-width:400px; /* Safari and Chrome */
+	column-gap:40px;
+	-moz-column-gap:40px; /* Firefox */
+	-webkit-column-gap:40px; /* Safari and Chrome */	
+}
+/* Mobile */
+@media only screen and (max-device-width: 767px){
+	#texttest{
+	columns:1;
+	-webkit-columns:1;
+	}
+}
+#menubutton{
+	position:absolute;
+	left:0;
+	top:0;
+	width:20px;
+	height:20px;
+	z-index:100;
+}
+.nonikud{
+	display: none;
+}
+.non{
+	color:brown;
+}
+.nikud{
+	color:brown;
+}
+/*settings>*/
+.settingsView {
+	display:none;
+    position:fixed;
+    height:100%;
+    width:100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background:#efdca9;
+    //background:#222222;
+    //background:white;
+}
+.settingsView div div {
+    padding-right:5px;
+    padding-left:5px;
+}
+.setHead {
+    position:fixed;
+    top:0;
+    width:100%;
+    height:50px;
+    background:rgb(241, 233, 203);
+    right:0;
+    border-bottom:1px solid black;
+}
+.allOptions{
+    padding:10px;
+}
+.setOption {
+    border-bottom: 1px solid grey;
+    height:55px;
+    line-height:45px;
+}.setOption div button{
+    display:inline;
+}
+#set1 {
+    width:100%;
+    text-align:center;
+    position:relative;
+    font-size: 22px;
+    line-height:55px;
+}
+#set2 {
+}
+
+#textSize{
+	display: inline;
+	border-right:1px solid grey;
+	border-top:1px solid grey;
+	width:40px;
+	float:right;
+	text-align:center;
+	border-bottom: 1px solid grey;
+}#textSize.reg{
+	font-size: 22px
+}#textSize.large{
+	font-size:26px;
+}#textSize.xLarge{
+	font-size:30px;
+	border-left:1px solid grey;
+}
+.setDone {
+    position:absolute;
+    font-size: 20px;
+    width: 50px;
+    height:50px;
+    line-height:55px;
+    text-align: center;
+    right:0;
+	background-image: url('../p/backb.png');
+	background-repeat:no-repeat;
+    background-position:center;
+	background-size:40px 40px;
+    top:0;
+}
+#setDesc {
+    float:right;
+    position: absolute;
+    font-family: Shlomo semi Stam;
+}
+#setVal {
+    float:left;
+    height:55px;
+}
+/*<settings*/
+
+/*about>*/
+.aboutView {
+	display:none;
+    position:fixed;
+    height:100%;
+    width:100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background:#efdca9;
+    //background:#222222;
+    //background:white;
+}
+.aboutView p{
+    margin-right:5px;
+    margin-left:5px;
+}
+
+.aboutView ul{
+margin:5px;
+}
+
+.aboutHead {
+    position:fixed;
+    top:0;
+    width:100%;
+    height:50px;
+    background:rgb(241, 233, 203);
+    right:0;
+    border-bottom:1px solid black;
+}
+.allOptions{
+    padding-right:10px;
+    padding-left:10px;
+}
+.aboutOption {
+    border-bottom: 1px solid grey;
+    border-top: 1px solid grey;
+    height:55px;
+    line-height:55px;
+}
+#about1 {
+    width:100%;
+    text-align:center;
+    position:relative;
+    font-size: 22px;
+    line-height:55px;
+}
+#about4 {
+    border-bottom: 0px solid grey;
+}
+.aboutDone {
+    position:absolute;
+    font-size: 20px;
+    width: 50px;
+    height:50px;
+    line-height:55px;
+    text-align: center;
+    right:0;
+    top:0;
+	background-image: url('../p/backb.png');
+	background-repeat:no-repeat;
+    background-position:center;
+	background-size:40px 40px;
+}
+#aboutDesc {
+    float:right;
+    position: absolute;
+}
+#aboutVal {
+    float:left;
+}
+.info.en{
+	direction:ltr;
+}
+#abtViewBack{
+    float:right;
+    position: absolute;
+    top: 0;
+    right: 0;
+	width:50px;
+	height:50px;
+	background-image: url('../p/backb.png');
+	background-repeat:no-repeat;
+    background-position:center;
+	background-size:40px 40px;
+}
+/*<about*/
+
+/*osView>*/
+.osView{
+	display:none;
+    position:fixed;
+    height:100%;
+    width:100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background:#efdca9;
+	text-align:left;
+	direction:ltr;
+    overflow: scroll;
+    padding-right:5px;
+    padding-left:5px;
+}
+pre {white-space: pre-wrap;
+word-wrap: break-word;
+}
+code{width:100%;
+    display:block;
+    }
+.osScroll{
+    overflow: scroll;
+    padding-right:10px;
+    padding-left:10px;}
+#osViewBack{
+    float:right;
+    top: 0;
+    right: 0;
+	width:50px;
+	height:50px;
+	background-image: url('../p/backb.png');
+	background-repeat:no-repeat;
+    background-position:center;
+	background-size:40px 40px;
+    position:fixed;
+}
+/*<osView*/
+/*abtView>*/
+.abtView{
+	display:none;
+    position:fixed;
+    height:100%;
+    width:100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background:#efdca9;
+	//text-align:left;
+	//direction:ltr;
+    overflow: scroll;
+    padding-right:5px;
+    padding-left:5px;
+}
+.abtScroll{
+    padding-right:10px;
+    padding-left:10px;}
+/*<abtView*/
+.invis{color:transparent}
+
+::selection{
+	-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
