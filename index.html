@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta content="user-scalable=no, width=device-width" name="viewport">
+	<meta name="viewport" content="width=device-width, user-scalable=no">
 	<meta charset="utf-8">
 
 	<title>Tikkun</title>
@@ -9,9 +9,10 @@
 
 	<script src="js/jQuery_v1.9.1.js" type="text/javascript"></script>
 	<script src="js/min.js" type="text/javascript"></script>
-	<script src="js/parshadata.js" type="text/javascript"></script>
+	<script src="js/parshadata7.js" type="text/javascript"></script>
 	<script src="js/parshaCal.js" type="text/javascript"></script>
-	<script src="js/myjs.js" type="text/javascript"></script>
+	<script src="js/tikunfuncsme4.js" type="text/javascript"></script>
+	<script src="js/fastclick.js" type="text/javascript"></script>
 </head>
 
 <body data-role="page" style="min-height:100% !important;">
@@ -158,6 +159,9 @@
          goback();
 	}
 
+window.addEventListener( "load", function() {
+    FastClick.attach( document.body );
+}, false );
 	</script>
 
 </body>
