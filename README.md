@@ -14,9 +14,6 @@ The traditional Tikkun Korim places the 'Chumash' text on the right and the 'Tor
 * Tap the grid (four squares) to start from the beginning.
 * Quickly switch from one Aliya to the next by tapping the arrows on the top left.
 
-**FAQ:**
-[sharshi.com/qa](http://sharshi.com/qa)
-
 **Comments about Tikun Korim, Torah:**
 
 * [tikkun-android@sharshi.com](mailto:tikkun-android@sharshi.com)
