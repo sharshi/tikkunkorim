@@ -1,6 +1,8 @@
-Perfect for going over any portion of the Torah reading. Choose a Parsha including double Parshiot and start practicing right away. Makes practicing much easier on the go.
+Perfect for reviewing any portion of the Torah reading.
 
-The traditional Tikkun Korim places the 'Chumash' text on the right and the 'Torah' text on the left. This project was made with mobile one handed use on small screened devices in mind, that's why we came up with a simple way to get the most out of the small screen, by simply tapping to remove the Trop and Nikkud.
+Choose a Parsha - including double Parshiot - and start practising right away. Makes practising easier - anytime, anywhere!
+
+The traditional Tikkun Korim places the 'Chumash' text on the right and the 'Torah' text on the left. This project was made with mobile one-handed usage on small-screened devices in mind. We came up with a simple way to get the most out of the small screen, by simply tapping to remove the Trop and Nikkud.
 
 **תיקון קוראים לחמשה חומשי תורה**
 
