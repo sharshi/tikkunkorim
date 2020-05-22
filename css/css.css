@@ -217,6 +217,7 @@ ul, menu, dir {
     background:rgb(241, 233, 203);
     right:0;
     border-bottom:1px solid black;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
 }
 .allOptions{
     padding:10px;
