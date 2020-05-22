@@ -25,6 +25,7 @@ function nextprevAli(dir) {
 }
 
 function goback() {
+	$('.spacer').show();
 	if (currView == 'text') {
 		$('#texttest').hide();
 		$('#sidebar, #' + targetID).show();
@@ -79,6 +80,7 @@ function fillSeforim() {
 	$('#banner').show();
 	$('#bottombar').show();
 	$('#parshnm, #alinm').html('');
+	$('.spacer').show();
 }
 
 function fillParshios(sefer) {
@@ -102,6 +104,7 @@ function fillParshios(sefer) {
 	$('#bottombar').hide();
 	currView = 'parshios';
 	$('#parshnm, #alinm').html('');
+	$('.spacer').show();
 }
 
 function fillAliyos(parsha) {
@@ -133,6 +136,8 @@ function fillAliyos(parsha) {
 	})
 	setCookie('latestParsha',currParsha);// Gets latest parsha
 	currView = 'aliyos';
+	$('.spacer').show();
+
 }
 
 function getSeferFromParasha(parasha) {
