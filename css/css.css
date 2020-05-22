@@ -11,6 +11,7 @@
 body{
 	direction:rtl;
 	background:#efdca9;
+	padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 #sidebar{
@@ -55,10 +56,6 @@ ul, menu, dir {
 	right:0;
 	border-bottom:1px solid black;
 	padding-top:15px; //ios
-
-    /* Status bar height on iOS 11+ */
-    padding-top: constant(safe-area-inset-top);
-
 }
 #menubar div{
 }
