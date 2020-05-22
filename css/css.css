@@ -56,6 +56,7 @@ ul, menu, dir {
 	border-bottom:1px solid black;
   padding-top:15px; /* ios */
   display: flex;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 #banner{
