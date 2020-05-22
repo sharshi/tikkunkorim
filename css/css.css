@@ -120,7 +120,8 @@ ul, menu, dir {
 	height:50px;
 	background:rgb(241,233,203);
 	right:0;
-	border-top:1px solid black;
+  border-top:1px solid black;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 #bottombar .set{
 	height:50px;
