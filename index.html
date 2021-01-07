@@ -10,13 +10,12 @@
 
 	<title>Tikkun</title>
 	<link href="css/css.css" rel="stylesheet">
-
-	<script src="js/jQuery_v1.9.1.js" type="text/javascript"></script>
-	<script src="js/min.js" type="text/javascript"></script>
-	<script src="js/parshadata7.js" type="text/javascript"></script>
-	<script src="js/parshaCal.js" type="text/javascript"></script>
-	<script src="js/tikunfuncsme4.js" type="text/javascript"></script>
-	<script src="js/fastclick.js" type="text/javascript"></script>
+	<script src="js/jQuery_v1.9.1.js"></script>
+	<script src="js/parshadata7.js"></script>
+	<script src="js/parshaCal.js"></script>
+	<script src="js/tikunfuncsme4.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script src="./index.js"></script>
 </head>
 
 <body data-role="page" style="min-height:100% !important;">
@@ -147,27 +146,5 @@
     </div>
 	<div id="texttest">
 	</div>
-
-	<script src="cordova.js" type="text/javascript"></script>
-	<script src="js/index.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	app.initialize();
-
-	document.addEventListener("deviceready", onDeviceReady, false);
-
-	function onDeviceReady() {
-	    document.addEventListener("backbutton", onBackKeyDown, false);
-	}
-
-	function onBackKeyDown() {
-         //alert("hihi");
-         goback();
-	}
-
-window.addEventListener( "load", function() {
-    FastClick.attach( document.body );
-}, false );
-	</script>
-
 </body>
 </html>
