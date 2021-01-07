@@ -17,5 +17,3 @@ The traditional Tikkun Korim places the 'Chumash' text on the right and the 'Tor
 **Comments about Tikun Korim, Torah:**
 
 * [tikkun-repo@shafeh.org](mailto:tikkun-repo@shafeh.org)
-
-* [@ShafehOrg](http://twitter.com/ShafehOrg)
