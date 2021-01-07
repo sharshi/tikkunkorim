@@ -1,9 +1,10 @@
-import Game from "./scripts/game";
-import Game from "./scripts/game";
-// import "./styles/reset.scss";
+import { israelParshaCal, chulParshaCal } from "./js/parshaCal";
+import { seforim, aliyanames, parshios, aliyos, tikun } from "./js/parshaData";
+// TODO: all images should load dynamically
+import "./css/css.css";
 
 document.addEventListener("DOMContentLoaded", () => {
-  game.init();
+
   document.addEventListener("backbutton", onBackKeyDown, false);
 });
 

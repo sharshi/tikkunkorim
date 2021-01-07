@@ -1,6 +1,6 @@
-//Important add missing weeks
+// TODO: add missing weeks
 
-var israelParshaCal = {
+export const israelParshaCal = {
   "8/30/2014": "שופטים",
   "9/06/2014": "כי תצא",
   "9/13/2014": "כי תבא",
@@ -112,7 +112,7 @@ var israelParshaCal = {
   "9/24/2016":"כי תבוא",
   "10/1/2016":"נצבים"
 }
-var chulParshaCal = {
+export const chulParshaCal = {
   "8/30/2014": "שופטים",
   "9/06/2014": "כי תצא",
   "9/13/2014":  "כי תבא",
