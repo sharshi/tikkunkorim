@@ -1,43 +1,43 @@
 @charset "utf-8";
 /* CSS Document */
 @font-face{
-	font-family: Guttman Stam;
-	src: url('../css/Guttman.ttf')
+  font-family: Guttman Stam;
+  src: url('../css/Guttman.ttf')
 }
 @font-face{
-	font-family: Shlomo semi Stam;
-	src: url('../css/ShlomosemiStam.ttf')
+  font-family: Shlomo semi Stam;
+  src: url('../css/ShlomosemiStam.ttf')
 }
 body{
-	direction:rtl;
-	background:#efdca9;
-	padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  direction:rtl;
+  background:#efdca9;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 #sidebar{
-	padding-top:45px;
-	padding-bottom:45px;
-	margin: 0 auto;
-	max-width:900px;
+  padding-top:45px;
+  padding-bottom:45px;
+  margin: 0 auto;
+  max-width:900px;
 }
 
 #menu{
-	text-align: center;
-	padding-top:15px; /* ios */
+  text-align: center;
+  padding-top:15px; /* ios */
 }
 #menu li{
-	display:inline-block;
-	list-style: none;
-	line-height:60px;
-	font-size:25px;
-	word-wrap:break-word;
-	width:95%;
-	max-width:400px;
-	height:60px;
-	background: rgb(241,233,203);
-	margin: 5px;
-	font-family: Shlomo semi Stam;
-	color:#000;
+  display:inline-block;
+  list-style: none;
+  line-height:60px;
+  font-size:25px;
+  word-wrap:break-word;
+  width:95%;
+  max-width:400px;
+  height:60px;
+  background: rgb(241,233,203);
+  margin: 5px;
+  font-family: Shlomo semi Stam;
+  color:#000;
 }
 ul, menu, dir {
     -webkit-margin-before: 0;
@@ -47,41 +47,41 @@ ul, menu, dir {
     -webkit-padding-start: 0px;
 }
 #menubar{
-	position:fixed;
-	top:0;
-	width:100%;
-	/* height:50px; */
-	background:rgb(241,233,203);
-	right:0;
-	border-bottom:1px solid black;
+  position:fixed;
+  top:0;
+  width:100%;
+  /* height:50px; */
+  background:rgb(241,233,203);
+  right:0;
+  border-bottom:1px solid black;
   padding-top:15px; /* ios */
   display: flex;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
 }
 
 #banner{
-	 width:100%;
-	 font-size: 30px;
-	 line-height:50px;
-	 text-align:center;
-	 font-family:Shlomo semi Stam;
+   width:100%;
+   font-size: 30px;
+   line-height:50px;
+   text-align:center;
+   font-family:Shlomo semi Stam;
 }
 .rb{
-	/* float:right; */
-	font-size: 20px;
-	max-width: 70px;
-	height:50px;
-	font-size: 15px;
-	line-height:20px;
-	text-align: center;
-	background-size:35px 35px;
+  /* float:right; */
+  font-size: 20px;
+  max-width: 70px;
+  height:50px;
+  font-size: 15px;
+  line-height:20px;
+  text-align: center;
+  background-size:35px 35px;
 }
 .bn{
-	height:50px;
-	width:50px;
-	font-size: 15px;
-	line-height:20px;
-	text-align: center;
+  height:50px;
+  width:50px;
+  font-size: 15px;
+  line-height:20px;
+  text-align: center;
   background-size:35px 35px;
   justify-self: end;
   background-repeat:no-repeat;
@@ -91,107 +91,107 @@ ul, menu, dir {
   flex-grow: 1;
 }
 #parshnm{
-	padding-left:10px;
+  padding-left:10px;
 }
 #but{
-	background-size:35px 35px;
-	width:50px;
-	background-image: url('../p/grid1.png');
+  background-size:35px 35px;
+  width:50px;
+  background-image: url('../p/grid1.png');
   background-repeat:no-repeat;
   background-position:center;
 }
 #backb{
-	width:50px;
-	background-image: url('../p/backb.png');
-	background-repeat:no-repeat;
+  width:50px;
+  background-image: url('../p/backb.png');
+  background-repeat:no-repeat;
     background-position:center;
 }
 #nextali{
-	background-image: url('../p/nextitem.png');
+  background-image: url('../p/nextitem.png');
 }
 #prevali{
-	background-image: url('../p/previtem.png');
+  background-image: url('../p/previtem.png');
 }
 
 #bottombar{
-	position:fixed;
-	bottom:0;
-	width:100%;
-	height:50px;
-	background:rgb(241,233,203);
-	right:0;
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:50px;
+  background:rgb(241,233,203);
+  right:0;
   border-top:1px solid black;
   padding-bottom: env(safe-area-inset-bottom);
 }
 #bottombar .set{
-	height:50px;
-	width:50px;
-	font-size: 15px;
-	line-height:50px;
-	text-align: center;
+  height:50px;
+  width:50px;
+  font-size: 15px;
+  line-height:50px;
+  text-align: center;
     background-repeat:no-repeat;
-	color: white;
+  color: white;
     background-position:center;
-	background-image: url('../p/set.png');
-	background-size:35px 35px;
+  background-image: url('../p/set.png');
+  background-size:35px 35px;
 }
 #bottombar .about{
-	height:50px;
-	width:50px;
-	font-size: 15px;
-	line-height:50px;
-	text-align: center;
+  height:50px;
+  width:50px;
+  font-size: 15px;
+  line-height:50px;
+  text-align: center;
     background-repeat:no-repeat;
     background-position:center;
-	color: white;
-	background-image: url('../p/about.png');
-	background-size:35px 35px;
-	float: left;
-	
+  color: white;
+  background-image: url('../p/about.png');
+  background-size:35px 35px;
+  float: left;
+  
 }
 #texttest{
-	text-align: justify;
-	margin: 0 auto;
-	max-width:1000px;
-	display:none;
-	padding-top:60px; /* +15 for ios */
-	direction:rtl;
-	font-family: Shlomo semi Stam;
-	column-width:400px;
-	font-size: 22px;
-	-moz-column-width:400px; /* Firefox */
-	-webkit-column-width:400px; /* Safari and Chrome */
-	column-gap:40px;
-	-moz-column-gap:40px; /* Firefox */
-	-webkit-column-gap:40px; /* Safari and Chrome */	
+  text-align: justify;
+  margin: 0 auto;
+  max-width:1000px;
+  display:none;
+  padding-top:60px; /* +15 for ios */
+  direction:rtl;
+  font-family: Shlomo semi Stam;
+  column-width:400px;
+  font-size: 22px;
+  -moz-column-width:400px; /* Firefox */
+  -webkit-column-width:400px; /* Safari and Chrome */
+  column-gap:40px;
+  -moz-column-gap:40px; /* Firefox */
+  -webkit-column-gap:40px; /* Safari and Chrome */  
 }
 /* Mobile */
 @media only screen and (max-device-width: 767px){
-	#texttest{
-	columns:1;
-	-webkit-columns:1;
-	}
+  #texttest{
+  columns:1;
+  -webkit-columns:1;
+  }
 }
 #menubutton{
-	position:absolute;
-	left:0;
-	top:0;
-	width:20px;
-	height:20px;
-	z-index:100;
+  position:absolute;
+  left:0;
+  top:0;
+  width:20px;
+  height:20px;
+  z-index:100;
 }
 .nonikud{
-	display: none;
+  display: none;
 }
 .non{
-	color:brown;
+  color:brown;
 }
 .nikud{
-	color:brown;
+  color:brown;
 }
 /*settings>*/
 .settingsView {
-	display:none;
+  display:none;
     position:fixed;
     height:100%;
     width:100%;
@@ -209,11 +209,11 @@ ul, menu, dir {
 }
 .setHead {
     position:fixed;
-	/* //top:15px; //ios  */
+  /* //top:15px; //ios  */
     top:0;
     width:100%;
     height:50px;
-	padding-top:15px; /* ios */
+  padding-top:15px; /* ios */
     background:rgb(241, 233, 203);
     right:0;
     border-bottom:1px solid black;
@@ -238,20 +238,20 @@ ul, menu, dir {
 }
 
 #textSize{
-	display: inline;
-	border-right:1px solid grey;
-	border-top:1px solid grey;
-	width: 40px;
-	float: right;
-	text-align:center;
-	border-bottom: 1px solid grey;
+  display: inline;
+  border-right:1px solid grey;
+  border-top:1px solid grey;
+  width: 40px;
+  float: right;
+  text-align:center;
+  border-bottom: 1px solid grey;
 }#textSize.reg{
-	font-size: 22px
+  font-size: 22px
 }#textSize.large{
-	font-size:26px;
+  font-size:26px;
 }#textSize.xLarge{
-	font-size:30px;
-	border-left:1px solid grey;
+  font-size:30px;
+  border-left:1px solid grey;
 }
 .setDone {
     position:absolute;
@@ -260,12 +260,12 @@ ul, menu, dir {
     height:50px;
     line-height:55px;
     text-align: center;
-	padding-top:15px; /* ios must be above 'top' */
+  padding-top:15px; /* ios must be above 'top' */
     right:0;
-	background-image: url('../p/backb.png');
-	background-repeat:no-repeat;
+  background-image: url('../p/backb.png');
+  background-repeat:no-repeat;
     background-position:center;
-	background-size:40px 40px;
+  background-size:40px 40px;
     top:0;
 }
 #setDesc {
@@ -281,7 +281,7 @@ ul, menu, dir {
 
 /*about>*/
 .aboutView {
-	display:none;
+  display:none;
     position:fixed;
     height:100%;
     width:100%;
@@ -337,14 +337,14 @@ margin:5px;
     width: 50px;
     height:50px;
     line-height:55px;
-	padding-top:15px; /* ios */
+  padding-top:15px; /* ios */
     text-align: center;
     right:0;
     top:0;
-	background-image: url('../p/backb.png');
-	background-repeat:no-repeat;
+  background-image: url('../p/backb.png');
+  background-repeat:no-repeat;
     background-position:center;
-	background-size:40px 40px;
+  background-size:40px 40px;
 }
 #aboutDesc {
     float:right;
@@ -354,26 +354,26 @@ margin:5px;
     float:left;
 }
 .info.en{
-	direction:ltr;
+  direction:ltr;
 }
 #abtViewBack{
     float:right;
     position: absolute;
-	top:15px; /* ios */
+  top:15px; /* ios */
     top: 0;
     right: 0;
-	width:50px;
-	height:50px;
-	background-image: url('../p/backb.png');
-	background-repeat:no-repeat;
+  width:50px;
+  height:50px;
+  background-image: url('../p/backb.png');
+  background-repeat:no-repeat;
     background-position:center;
-	background-size:40px 40px;
+  background-size:40px 40px;
 }
 /*<about*/
 
 /*osView>*/
 .osView{
-	display:none;
+  display:none;
     position:fixed;
     height:100%;
     width:100%;
@@ -382,8 +382,8 @@ margin:5px;
     left: 0;
     right: 0;
     background:#efdca9;
-	text-align:left;
-	direction:ltr;
+  text-align:left;
+  direction:ltr;
     overflow: scroll;
     padding-right:5px;
     padding-left:5px;
@@ -402,19 +402,19 @@ code{width:100%;
     float:right;
     top: 0;
     right: 0;
-	width:50px;
-	height:50px;
-	background-image: url('../p/backb.png');
-	background-repeat:no-repeat;
+  width:50px;
+  height:50px;
+  background-image: url('../p/backb.png');
+  background-repeat:no-repeat;
     background-position:center;
-	background-size:40px 40px;
+  background-size:40px 40px;
     position:fixed;
-	padding-top:15px; /* ios */
+  padding-top:15px; /* ios */
 }
 /*<osView*/
 /*abtView>*/
 .abtView{
-	display:none;
+  display:none;
     position:fixed;
     height:100%;
     width:100%;
@@ -423,8 +423,8 @@ code{width:100%;
     left: 0;
     right: 0;
     background:#efdca9;
-	/* text-align:left;
-	direction:ltr; */
+  /* text-align:left;
+  direction:ltr; */
     overflow: scroll;
     padding-right:5px;
     padding-left:5px;
@@ -436,7 +436,7 @@ code{width:100%;
 .invis{color:transparent}
 
 ::selection{
-	-webkit-touch-callout: none;
+  -webkit-touch-callout: none;
 -webkit-user-select: none;
 -khtml-user-select: none;
 -moz-user-select: none;
