@@ -1,74 +1,23 @@
 import { $ } from 'jquery';
 import {
-  parshios,
   aliyos,
   aliyanames,
-  tikun,
   seforim,
 } from './parshaData';
+import {
+  removeNikud,
+  getParshios,
+  getSeferFromParasha,
+} from './util/util';
+import { israelParshaCal, chulParshaCal } from './parshaCal';
 
 const targetID = 'menu';
-let currParsha;
-let currAliya;
-let showNikud = true;
-let currView;
-let parshaCalendar;
-let geoLocation;
-let list = '';
-
-function getParshios(sefer) {
-  return parshios[sefer];
-}
-
-function getRange(parasha, aliya) {
-  return aliyos[parasha][aliya];
-}
-
-const getText = (parasha, aliya, yesnikud) => {
-  const sefer = getSeferFromParasha(parasha);
-  const range = getRange(parasha, aliya);
-  // input = 6:1 16:17 or 17:8 18:5
-  let startPerek = parseInt(range.split(' ')[0].split(':')[0], 10);
-  let startPasuk = parseInt(range.split(' ')[0].split(':')[1], 10);
-  const endPerek = parseInt(range.split(' ')[1].split(':')[0], 10);
-  const endPasuk = parseInt(range.split(' ')[1].split(':')[1], 10);
-  let PerekObj = tikun[sefer][startPerek];
-  let txt = '';
-  if (startPerek === endPerek) {
-    while (startPasuk <= endPasuk) {
-      txt += `${PerekObj[startPasuk]} `;
-      startPasuk++;
-    }
-  } else {
-    //  2 scenarios, never have more than 3 perokim in an aliya
-    // 1:2 2:3
-    // 1:2 3:5 <- include all of 2...
-    // go through startperek from startpasuk until no more items
-    while (PerekObj[startPasuk]) {
-      txt += `${PerekObj[startPasuk]} `;
-      startPasuk += 1;
-    }
-    if (startPerek + 1 < endPerek) {
-      // go through whole middle perek
-      startPerek += 1;
-      startPasuk = 1;
-      PerekObj = tikun[sefer][startPerek];
-      while (PerekObj[startPasuk]) {
-        txt += `${PerekObj[startPasuk]} `;
-        startPasuk += 1;
-      }
-    }
-    // then go through endperek from 1 until endpasuk
-    PerekObj = tikun[sefer][endPerek];
-    startPasuk = 1;
-    while (startPasuk <= endPasuk) {
-      txt += `${PerekObj[startPasuk]} `;
-      startPasuk += 1;
-    }
-  }
-  if (!yesnikud) txt = removeNikud(txt);
-  $('#texttest').show();
-  return txt;
+const options = {
+  currParsha,
+  currAliya,
+  showNikud: true,
+  parshaCalendar,
+  geoLocation,
 };
 
 const fillAliyos = (parsha) => {
@@ -76,7 +25,7 @@ const fillAliyos = (parsha) => {
     scrollTop: 0,
   }, 'fast');
   const itemTemplate = '<li>{{text}}</li>';
-  list = '';
+  let list = '';
   $(`#${targetID}`).html('');
   let numAliyas = 7;
   if (aliyos[parsha][8]) numAliyas = 8;
@@ -95,19 +44,11 @@ const fillAliyos = (parsha) => {
     // show back and forth (next/prev) buttons
     $('.bn').show();
     $('#alinm').html(aliyanames[currAliya - 1]);
-    currView = 'text';
+    localStorage.currView = 'text';
   });
-  setCookie('latestParsha', currParsha); // Gets latest parsha
-  currView = 'aliyos';
+  localStorage.latestParsha = currParsha; // Gets latest parsha
+  localStorage.currView = 'aliyos';
   $('.spacer').show();
-};
-
-const getSeferFromParasha = (parasha) => {
-  // loop through parshios until you find the parasha
-  for (const ky in parshios) {
-    for (const p in parshios[ky]) { if (parshios[ky][p] == parasha) return ky; }
-  }
-  return `${parasha} not found`;
 };
 
 function fillParshios(sefer) {
@@ -119,7 +60,9 @@ function fillParshios(sefer) {
   let list = '';
   $(`#${targetID}`).html('');
   const prshs = getParshios(sefer);
-  for (const p in prshs) { list += itemTemplate.replace('{{text}}', prshs[p]); }
+  for (let i = 0; i < prshs.length; i += 1) {
+    list += itemTemplate.replace('{{text}}', prshs[i]);
+  }
   $(`#${targetID}`).html(list);
   // now make each li clickable
   $(`#${targetID} li`).on('click', () => {
@@ -128,7 +71,7 @@ function fillParshios(sefer) {
   });
   $('.rb').show();
   $('#bottombar').hide();
-  currView = 'parshios';
+  localStorage.currView = 'parshios';
   $('#parshnm, #alinm').html('');
   $('.spacer').show();
 }
@@ -147,8 +90,8 @@ function fillSeforim() {
     list += itemTemplate.replace('{{text}}', seforim[s]);
   }
 
-  // insertThisParsha();
-  // insertLatestParsha();
+  // !localStorage.myLocation || list += insertThisParsha();
+  // !localStorage.latestParsha || list += insertLatestParsha();
 
   // create list of parshiyot
   $('#menu').html(list);
@@ -158,12 +101,12 @@ function fillSeforim() {
   });
   $(`#${targetID} li.listParsha`).on('click', () => {
     fillAliyos($(this).html());
-    currView = 'aliyos';
+    localStorage.currView = 'aliyos';
     $('.rb').show();
     $('#banner').hide();
     $('#bottombar').hide();
   });
-  currView = 'seforim';
+  localStorage.currView = 'seforim';
   $('.rb,.bn').hide();
   $('#banner').show();
   $('#bottombar').show();
@@ -173,27 +116,27 @@ function fillSeforim() {
 
 function goback() {
   $('.spacer').show();
-  if (currView === 'text') {
+  if (localStorage.currView === 'text') {
     $('#texttest').hide();
     $(`#sidebar, #${targetID}`).show();
     fillAliyos(currParsha);
-  } else if (currView === 'aliyos') {
+  } else if (localStorage.currView === 'aliyos') {
     fillParshios(getSeferFromParasha(currParsha));
-  } else if (currView === 'parshios') {
+  } else if (localStorage.currView === 'parshios') {
     fillSeforim();
-  } else if (currView === 'settings') {
+  } else if (localStorage.currView === 'settings') {
     $('#settingsView').hide();
     fillSeforim();
-  } else if (currView === 'about') {
+  } else if (localStorage.currView === 'about') {
     $('#aboutView').hide();
-    currView = 'seforim';
-  } else if (currView == 'os') {
+    localStorage.currView = 'seforim';
+  } else if (localStorage.currView === 'os') {
     $('#osView').hide();
-    currView = 'about';
-  } else if (currView == 'abt') {
+    localStorage.currView = 'about';
+  } else if (localStorage.currView === 'abt') {
     $('#abtView').hide();
-    currView = 'about';
-  } else if (currView == 'seforim') navigator.app.exitApp();
+    localStorage.currView = 'about';
+  } else if (localStorage.currView === 'seforim') navigator.app.exitApp();
 }
 
 function nextprevAli(dir) {
@@ -215,6 +158,81 @@ function toggleNikud() {
   showNikud = !showNikud;
 }
 
+function setText(px, size) {
+  localStorage.ls = px;
+  localStorage.btnBg = size;
+  $('#texttest,#setDesc.showTextSize').css('font-size', px);
+  $('.reg').css('background', size === 'reg' ? 'white' : '#efdca9');
+  $('.large').css('background', size === 'large' ? 'white' : '#efdca9');
+  $('.xLarge').css('background', size === 'xLarge' ? 'white' : '#efdca9');
+}
+
+function navRules() {
+  $('#but').click(() => {
+    $('#menubar>div').hide();
+    $(`#${targetID}`).show();
+    $('#sidebar').show();
+    fillSeforim();
+    $('#texttest').html('');
+    $('#texttest').hide();
+  });
+  $('#backb').click(() => {
+    goback();
+    $('#texttest').hide();
+    $('.bn').hide();
+  });
+  // show menu and back button
+  $('#menu>li').click(() => $('.rb').show());
+
+  // enter settings from main screen
+  $('#settings').click(() => {
+    $('#settingsView').show();
+    localStorage.currView = 'settings';
+  });
+
+  // leave settings to main screen
+  $('#setDone').click(() => {
+    $('#settingsView').hide();
+    localStorage.currView = 'seforim';
+  });
+
+  // enter about from main screen
+  $('#about').click(() => {
+    $('#aboutView').show();
+    localStorage.currView = 'about';
+  });
+
+  // leave about to main screen
+  $('#aboutDone').click(() => {
+    $('#aboutView').hide();
+    localStorage.currView = 'seforim';
+  });
+
+  // select open sourse from about screen go to open source view
+  $('#about5').click(() => {
+    $('#osView').show();
+    localStorage.currView = 'os';
+  });
+
+  // leave open source view go to about screen
+  $('#osViewBack').click(() => {
+    $('#osView').hide();
+    localStorage.currView = 'about';
+  });
+
+  // select info from about screen go to info view
+  $('#about4').click(() => {
+    $('#abtView').show();
+    localStorage.currView = 'abt';
+  });
+
+  // leave info view go to about screen
+  $('#abtViewBack').click(() => {
+    $('#abtView').hide();
+    localStorage.currView = 'about';
+  });
+}
+
 $(() => {
   // getThisWeeksParsha();
   fillSeforim();
@@ -231,151 +249,39 @@ $(() => {
   });
 
   // TEXT SIZE
-  let ls; let btnBg; let
-    locBtnBg;
-  ls = getCookie('ls');
-  btnBg = getCookie('btnBg');
-  locBtnBg = getCookie('locBtnBg');
+  const { ls, btnBg, locBtnBg } = localStorage;
 
   /* set text size */
   if (ls) {
     $('#texttest,#setDesc.showTextSize').css('font-size', ls);
   }
 
-  $('.reg').on('click', () => setTextNormal());
-  $('.large').on('click', () => setTextBig());
-  $('.xLarge').on('click', () => setTextBigger());
+  $('.reg').on('click', () => setText('22px', 'reg'));
+  $('.large').on('click', () => setText('26px', 'large'));
+  $('.xLarge').on('click', () => setText('30px', 'xLarge'));
 
   /* color of text size buttons */
-  if (btnBg == null) {
-  } else {
+  if (btnBg) {
     $(`.${btnBg}`).css('background', 'white');
   }
   /* color of location buttons */
-  if (locBtnBg == null) {
-  } else {
+  if (locBtnBg) {
     $(`.${locBtnBg}`).css('background', 'white');
   }
 
   // left/right keypress for desktop
   $('body').keydown((e) => {
-    if (e.keyCode == 37) { // left
+    if (e.keyCode === 37) { // left
       nextprevAli(1);
-    } else if (e.keyCode == 39) { // right
+    } else if (e.keyCode === 39) { // right
       nextprevAli(-1);
-    } else if (e.keyCode == 13) { // switch text
+    } else if (e.keyCode === 13) { // switch text
       toggleNikud();
     }
   });
+
   navRules();
 });
-
-function navRules() {
-  $('#but').click(() => {
-    $('#menubar>div').hide();
-    $(`#${targetID}`).show();
-    $('#sidebar').show();
-    fillSeforim();
-    $('#texttest').html('');
-    $('#texttest').hide();
-  });
-  $('#backb').click(() => {
-    goback();
-    $('#texttest').hide();
-    $('.bn').hide();
-  });
-  // show menu and bach button
-  $('#menu>li').click(() => {
-    $('.rb').show();
-  });
-
-  // enter settings from main screen
-  $('#settings').click(() => {
-    $('#settingsView').show();
-    currView = 'settings';
-  });
-
-  // leave settings to main screen
-  $('#setDone').click(() => {
-    $('#settingsView').hide();
-    currView = 'seforim';
-  });
-
-  // enter about from main screen
-  $('#about').click(() => {
-    $('#aboutView').show();
-    currView = 'about';
-  });
-
-  // leave about to main screen
-  $('#aboutDone').click(() => {
-    $('#aboutView').hide();
-    currView = 'seforim';
-  });
-
-  // select open sourse from about screen go to open source view
-  $('#about5').click(() => {
-    $('#osView').show();
-    currView = 'os';
-  });
-
-  // leave open source view go to about screen
-  $('#osViewBack').click(() => {
-    $('#osView').hide();
-    currView = 'about';
-  });
-
-  // select info from about screen go to info view
-  $('#about4').click(() => {
-    $('#abtView').show();
-    currView = 'abt';
-  });
-
-  // leave info view go to about screen
-  $('#abtViewBack').click(() => {
-    $('#abtView').hide();
-    currView = 'about';
-  });
-}
-
-/*
-  Text size
-  .>>>>>> */
-
-function setTextNormal() {
-  setCookie('ls', '22px');
-  setCookie('btnBg', 'reg');
-  $('#texttest,#setDesc.showTextSize').css('font-size', '22px');
-  $('.reg').css('background', 'white');
-  $('.large').css('background', '#efdca9');
-  $('.xLarge').css('background', '#efdca9');
-}
-function setTextBig() {
-  setCookie('ls', '26px');
-  setCookie('btnBg', 'large');
-  $('#texttest,#setDesc.showTextSize').css('font-size', '26px');
-  $('.reg').css('background', '#efdca9');
-  $('.large').css('background', 'white');
-  $('.xLarge').css('background', '#efdca9');
-}
-function setTextBigger() {
-  setCookie('ls', '30px');
-  setCookie('btnBg', 'xLarge');
-  $('#texttest,#setDesc.showTextSize').css('font-size', '30px');
-  $('.reg').css('background', '#efdca9');
-  $('.large').css('background', '#efdca9');
-  $('.xLarge').css('background', 'white');
-}
-
-function getCookie(c_name) {
-  return localStorage[c_name];
-}
-function setCookie(cname, cvalue) {
-  localStorage[cname] = cvalue;
-}
-/* ^^^^^
-  Text size
-  */
 
 // Get this week's Parsha
 function getThisWeeksParsha() {
@@ -388,34 +294,34 @@ function getThisWeeksParsha() {
     if (t < today && s >= today) {
       thisWeekParsha = value;
     }
-    setCookie('thisWP', thisWeekParsha);
+    localStorage.thisWP = thisWeekParsha;
   });
 }
 
 // setting where you are
 function getLocation() {
 // need to test if this runs
-  if (getCookie('myLocation') === 'inCh') {
+  if (localStorage.myLocation === 'inCh') {
     geoLocation = 'in ch';
     // TODO:change parshacal var to chul
     parshaCalendar = chulParshaCal;
-  } else if (getCookie('myLocation') === 'inIl') {
+  } else if (localStorage.myLocation === 'inIl') {
     geoLocation = 'in ey';
     // TODO:change parshacal var to ey
     parshaCalendar = israelParshaCal;
   }
 
   $('.inChul').click(() => {
-    setCookie('myLocation', 'inCh');
-    setCookie('locBtnBg', 'inChul');
+    localStorage.myLocation = 'inCh';
+    localStorage.locBtnBg = 'inChul';
     $('div.geoLoc').html('In Chul');
 
     $('div#textSize.inChul').css('background', 'white');
     $('div#textSize.inEy').css('background', '#efdca9');
   });
   $('.inEy').click(() => {
-    setCookie('myLocation', 'inIl');
-    setCookie('locBtnBg', 'inEy');
+    localStorage.myLocation = 'inIl';
+    localStorage.locBtnBg = 'inEy';
     $('div.geoLoc').html('In EY');
 
     $('div#textSize.inEy').css('background', 'white');
@@ -426,40 +332,11 @@ function getLocation() {
 }
 
 function insertThisParsha() {
-  if (getCookie('myLocation') === undefined || getCookie('myLocation') === null) {
-    // do nothing
-  } else {
-    list += `<br><p>פרשת השבוע:</p><li class="listParsha">${getCookie('thisWP')}</li>`;
-  }
+  return `<br><p>פרשת השבוע:</p><li class="listParsha">${localStorage.thisWP}</li>`;
 }
 
 function insertLatestParsha() {
-  if (getCookie('latestParsha') === undefined || getCookie('latestParsha') === null) {
-    // do nothing
-  } else {
-    list += `<p>המקום האחרון:</p><li class="listParsha">${getCookie('latestParsha')}</li>`;
-  }
+  return `<p>המקום האחרון:</p><li class="listParsha">${localStorage.latestParsha}</li>`;
 }
 
-document.addEventListener('backbutton', onBackKeyDown, false);
-
-function onBackKeyDown() {
-  goback();
-}
-
-/* var mywindow = $(window);
-var mypos = mywindow.scrollTop();
-var up = false;
-var newscroll;
-mywindow.scroll(function() {
-  newscroll = mywindow.scrollTop();
-  if (newscroll > mypos && !up) {
-    $('#menubar').stop().slideToggle();
-    up = !up;
-    console.log(up);
-  } else if (newscroll < mypos && up) {
-    $('#menubar').stop().slideToggle();
-    up = !up;
-  }
-  mypos = newscroll;
-}); */
+document.addEventListener('backbutton', goback, false);
