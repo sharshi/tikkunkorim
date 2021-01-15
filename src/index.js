@@ -4,7 +4,6 @@ import { seforim, aliyanames, parshios, aliyos, tikun } from "./js/parshaData";
 import "./css/css.css";
 
 document.addEventListener("DOMContentLoaded", () => {
-
   document.addEventListener("backbutton", onBackKeyDown, false);
 });
 
