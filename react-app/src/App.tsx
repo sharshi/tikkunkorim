@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import Menu from './components/Menu';
 import NavBar from './components/NavBar';
 import TextView from './components/TextView';
 import Settings from './components/Settings';
 import About from './components/About';
+import { parshios } from './data/parshios';
+import { aliyos } from './data/aliyos';
 
 // Placeholder types for future data
 // TODO: Replace with real data and logic as we migrate
-const seforim = ["בראשית", "שמות", "ויקרא", "במדבר", "דברים"];
+const seforim = Object.keys(parshios);
 const aliyanames = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שביעי", "מפטיר"];
 
 function App() {
@@ -43,17 +45,20 @@ function App() {
   // Renderers for each view
   const renderParshios = () => (
     <ul>
-      {/* TODO: Replace with real parsha list for selectedSefer */}
-      {["פרשה א", "פרשה ב", "פרשה ג"].map(parsha => (
+      {selectedSefer && parshios[selectedSefer].map(parsha => (
         <li key={parsha} onClick={() => handleParshaClick(parsha)}>{parsha}</li>
       ))}
     </ul>
   );
   const renderAliyos = () => (
     <ul>
-      {aliyanames.map((name, idx) => (
-        <li key={name} onClick={() => handleAliyaClick(idx+1)}>{name}</li>
-      ))}
+      {selectedParsha && aliyos[selectedParsha]
+        ? Object.entries(aliyos[selectedParsha]).map(([num]) => (
+            <li key={num} onClick={() => handleAliyaClick(Number(num))}>{aliyanames[Number(num)-1] || `עליה ${num}`}</li>
+          ))
+        : aliyanames.map((name, idx) => (
+            <li key={name} onClick={() => handleAliyaClick(idx+1)}>{name}</li>
+          ))}
     </ul>
   );
 
