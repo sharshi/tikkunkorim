@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from "./ui/button";
 
 interface MenuProps {
   seforim: string[];
@@ -6,9 +7,11 @@ interface MenuProps {
 }
 
 const Menu: React.FC<MenuProps> = ({ seforim, onSeferClick }) => (
-  <ul>
+  <ul className="space-y-2 text-right">
     {seforim.map(sefer => (
-      <li key={sefer} onClick={() => onSeferClick(sefer)}>{sefer}</li>
+      <li key={sefer}>
+        <Button variant="ghost" className="w-full justify-start" onClick={() => onSeferClick(sefer)}>{sefer}</Button>
+      </li>
     ))}
   </ul>
 );

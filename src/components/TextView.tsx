@@ -52,9 +52,8 @@ const TextView: React.FC<TextViewProps> = ({ parsha, aliya, onBack }) => {
   const text = getText(parsha, aliya);
   return (
     <div>
-      <h2>Text View</h2>
-      <p>Parsha: {parsha}, Aliya: {aliya}</p>
-      <div style={{whiteSpace: 'pre-wrap', direction: 'rtl'}}>{text || '—'}</div>
+      <p>{parsha}, {aliya}</p>
+      <div className="tikun-text-view">{text || '—'}</div>
       <button onClick={onBack}>Back</button>
     </div>
   );
