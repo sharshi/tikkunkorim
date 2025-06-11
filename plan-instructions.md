@@ -17,9 +17,9 @@
 ## 3. Functionality
 - Implement navigation between seforim, parshios, aliyos, and text display (using the above data and logic).
 - Implement next/prev aliya navigation (`nextprevAli`).
-- Implement "go back" logic (`goback`) for view transitions.
+- Implement "go back" logic (`goback`) for view transitions. [done]
 - Implement About and Settings modals, including:
-  - Text size and location controls (see TODO in `Settings.tsx`)
+  - Text size and location (israel, chul toggle) controls (see TODO in `Settings.tsx`)
 - Add support for showing/hiding nikud (`showNikud`).
 
 ## 4. Assets
