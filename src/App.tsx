@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from "./components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./components/ui/dialog";
 import { Card, CardContent } from "./components/ui/card";
@@ -8,7 +8,9 @@ import Settings from './components/Settings';
 import About from './components/About';
 import { parshios } from './data/parshios';
 import { aliyos } from './data/aliyos';
+import { getParshaForDate } from './data/parshaCal';
 import './index.css';
+import { Info, Settings as SettingsIcon, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 
 const seforim = Object.keys(parshios);
 const aliyanames = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שביעי", "מפטיר"];
@@ -20,6 +22,9 @@ function App() {
   const [selectedAliya, setSelectedAliya] = useState<number|null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [showNikud, setShowNikud] = useState(true);
+  const [region, setRegion] = useState<'israel'|'chul'>('israel');
+  const [textSize, setTextSize] = useState<'reg'|'large'|'xLarge'>('reg');
 
   // Navigation logic
   const handleSeferClick = (sefer: string) => {
@@ -39,6 +44,16 @@ function App() {
     else if (view === 'aliyos') setView('parshios');
     else if (view === 'parshios') setView('seforim');
   };
+  const handleNextAliya = () => {
+    if (selectedAliya && selectedParsha && aliyos[selectedParsha][selectedAliya + 1]) {
+      setSelectedAliya(selectedAliya + 1);
+    }
+  };
+  const handlePrevAliya = () => {
+    if (selectedAliya && selectedAliya > 1) {
+      setSelectedAliya(selectedAliya - 1);
+    }
+  };
 
   // Renderers
   const renderParshios = () => (
@@ -53,7 +68,7 @@ function App() {
   const renderAliyos = () => (
     <ul className="space-y-2 text-right">
       {selectedParsha && aliyos[selectedParsha]
-        ? Object.entries(aliyos[selectedParsha]).map(([num], idx) => (
+        ? Object.entries(aliyos[selectedParsha]).map(([num]) => (
             <li key={num}>
               <Button variant="ghost" className="w-full justify-start" onClick={() => handleAliyaClick(Number(num))}>{aliyanames[Number(num)-1] || `עליה ${num}`}</Button>
             </li>
@@ -66,20 +81,28 @@ function App() {
     </ul>
   );
 
+  // Get today's parsha for banner
+  const todayParsha = getParshaForDate(new Date(), region);
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Top nav bar / menubar */}
       <div className="flex items-center justify-between p-2 border-b bg-white/80 sticky top-0 z-10">
-        {view !== 'seforim' ? (
+              <div className="mr-2" style={{ width: 40, height: 40 }} aria-hidden />
+
+        
+        <span className="font-bold text-lg">תיקון קוראים</span>
+{view !== 'seforim' ? (
           <Button variant="ghost" size="icon" className="mr-2" onClick={handleBack} aria-label="חזור">
-            <span className="material-symbols-outlined">חזור</span>
+            <ArrowRight />
           </Button>
         ) : (
           <div className="mr-2" style={{ width: 40, height: 40 }} aria-hidden />
         )}
-        <span className="font-bold text-lg">תיקון קוראים</span>
-        <div className="mr-2" style={{ width: 40, height: 40 }} aria-hidden />
+
       </div>
+      {/* Banner for today's parsha */}
+      <div className="text-center py-2 text-xl font-bold">פרשת השבוע: {todayParsha || '—'}</div>
       {/* Main content / sidebar + menu */}
       <main className="flex-1 flex flex-col items-center justify-start p-2 max-w-md w-full mx-auto">
         <Card className="w-full mt-4">
@@ -89,8 +112,19 @@ function App() {
             )}
             {view === 'parshios' && renderParshios()}
             {view === 'aliyos' && renderAliyos()}
-            {view === 'text' && (
-              <TextView parsha={selectedParsha} aliya={selectedAliya} onBack={handleBack} />
+            {view === 'text' && selectedParsha && selectedAliya && (
+              <div>
+                <div className="flex justify-between mb-2">
+                  <Button variant="ghost" size="icon" onClick={handlePrevAliya} disabled={selectedAliya === 1} aria-label="הקודם">
+                    <ChevronLeft />
+                  </Button>
+                  <span className="font-bold">{selectedParsha} - {aliyanames[selectedAliya-1]}</span>
+                  <Button variant="ghost" size="icon" onClick={handleNextAliya} disabled={!aliyos[selectedParsha][selectedAliya+1]} aria-label="הבא">
+                    <ChevronRight />
+                  </Button>
+                </div>
+                <TextView parsha={selectedParsha} aliya={selectedAliya} onBack={handleBack} showNikud={showNikud} textSize={textSize} />
+              </div>
             )}
           </CardContent>
         </Card>
@@ -98,10 +132,10 @@ function App() {
       {/* Bottombar */}
       <div className="flex items-center justify-between p-2 border-t bg-white/80 sticky bottom-0 z-10">
         <Button variant="ghost" onClick={() => setShowAbout(true)} aria-label="About">
-          <span className="material-symbols-outlined">info</span>
+          <Info />
         </Button>
         <Button variant="ghost" onClick={() => setShowSettings(true)} aria-label="Settings">
-          <span className="material-symbols-outlined">settings</span>
+          <SettingsIcon />
         </Button>
       </div>
       {/* Settings Dialog */}
@@ -110,7 +144,15 @@ function App() {
           <DialogHeader>
             <DialogTitle>הגדרות</DialogTitle>
           </DialogHeader>
-          <Settings onClose={() => setShowSettings(false)} />
+          <Settings 
+            onClose={() => setShowSettings(false)} 
+            showNikud={showNikud}
+            setShowNikud={setShowNikud}
+            region={region}
+            setRegion={setRegion}
+            textSize={textSize}
+            setTextSize={setTextSize}
+          />
         </DialogContent>
       </Dialog>
       {/* About Dialog */}

@@ -15,11 +15,11 @@
 - Migrate and adapt utility functions from `old/js/tikunfuncsme4.js` (e.g., `getParshios`, `getRange`, navigation, view switching, etc.) [done]
 
 ## 3. Functionality
-- Implement navigation between seforim, parshios, aliyos, and text display (using the above data and logic).
-- Implement next/prev aliya navigation (`nextprevAli`).
+- Implement navigation between seforim, parshios, aliyos, and text display (using the above data and logic). [done]
+- Implement next/prev aliya navigation (`nextprevAli`). [done]
 - Implement "go back" logic (`goback`) for view transitions. [done]
 - Implement About and Settings modals, including:
-  - Text size and location (israel, chul toggle) controls (see TODO in `Settings.tsx`)
+  - Text size and location (israel, chul toggle) controls (see TODO in `Settings.tsx`) [done]
 - Add support for showing/hiding nikud (`showNikud`).
 
 ## 4. Assets

@@ -7,6 +7,8 @@ interface TextViewProps {
   parsha: string | null;
   aliya: number | null;
   onBack: () => void;
+  showNikud: boolean;
+  textSize: 'reg' | 'large' | 'xLarge';
 }
 
 // Add type for tikun
@@ -48,12 +50,12 @@ function getText(parsha: string | null, aliya: number | null): string {
   return txt.trim();
 }
 
-const TextView: React.FC<TextViewProps> = ({ parsha, aliya, onBack }) => {
+const TextView: React.FC<TextViewProps> = ({ parsha, aliya, onBack, showNikud, textSize }) => {
   const text = getText(parsha, aliya);
   return (
     <div>
       <p>{parsha}, {aliya}</p>
-      <div className="tikun-text-view">{text || '—'}</div>
+      <div className={`tikun-text-view ${showNikud ? '' : 'no-nikud'} text-size-${textSize}`}>{text || '—'}</div>
     </div>
   );
 };

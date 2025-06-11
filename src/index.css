@@ -128,6 +128,16 @@
   line-height: 2.2;
 }
 
+.text-size-reg {
+  font-size: 22px;
+}
+.text-size-large {
+  font-size: 28px;
+}
+.text-size-xLarge {
+  font-size: 36px;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
