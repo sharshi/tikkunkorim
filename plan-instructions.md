@@ -1,6 +1,6 @@
 # Plan for Importing Functionality from `/old` Folder
 
-## 1. UI & Layout
+## 1. UI & Layout [done]
 - Recreate the main layout from `old/index.html`:
   - Sidebar/menu (`#sidebar`, `#menu`)
   - Menubar with navigation buttons and labels (`#menubar`, `#backb`, `#but`, `#parshnm`, `#alinm`, `#prevali`, `#nextali`, `#banner`)
@@ -8,11 +8,11 @@
   - About and settings modals/views (`#aboutView`, `#settingsView`)
   - Adapt CSS style result from `old/css/css.css` and `old/css/index.css` into shadcn components as needed. dont actually move the css.
 
-## 2. Data & Logic
+## 2. Data & Logic [done]
 - Import and refactor the Torah/parsha/aliya data from:
-  - `old/js/newdata5.js` and/or `old/js/parshadata7.js` (choose one canonical source, or merge if needed)
-  - `old/js/parshaCal.js` for parsha calendar logic
-- Migrate and adapt utility functions from `old/js/tikunfuncsme4.js` (e.g., `getParshios`, `getRange`, navigation, view switching, etc.)
+  - `old/js/newdata5.js` and/or `old/js/parshadata7.js` (choose one canonical source, or merge if needed) [done]
+  - `old/js/parshaCal.js` for parsha calendar logic but put new placeholders for relevant dates to now [done]
+- Migrate and adapt utility functions from `old/js/tikunfuncsme4.js` (e.g., `getParshios`, `getRange`, navigation, view switching, etc.) [done]
 
 ## 3. Functionality
 - Implement navigation between seforim, parshios, aliyos, and text display (using the above data and logic).
