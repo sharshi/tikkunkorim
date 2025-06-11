@@ -42,7 +42,7 @@ function App() {
 
   // Renderers
   const renderParshios = () => (
-    <ul className="space-y-2">
+    <ul className="space-y-2 text-right">
       {selectedSefer && parshios[selectedSefer].map(parsha => (
         <li key={parsha}>
           <Button variant="ghost" className="w-full justify-start" onClick={() => handleParshaClick(parsha)}>{parsha}</Button>
@@ -51,7 +51,7 @@ function App() {
     </ul>
   );
   const renderAliyos = () => (
-    <ul className="space-y-2">
+    <ul className="space-y-2 text-right">
       {selectedParsha && aliyos[selectedParsha]
         ? Object.entries(aliyos[selectedParsha]).map(([num], idx) => (
             <li key={num}>
@@ -68,7 +68,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Top nav bar */}
+      {/* Top nav bar / menubar */}
       <div className="flex items-center justify-between p-2 border-b bg-white/80 sticky top-0 z-10">
         {view !== 'seforim' ? (
           <Button variant="ghost" size="icon" className="mr-2" onClick={handleBack} aria-label="חזור">
@@ -78,12 +78,9 @@ function App() {
           <div className="mr-2" style={{ width: 40, height: 40 }} aria-hidden />
         )}
         <span className="font-bold text-lg">תיקון קוראים</span>
-        <div className="flex gap-2">
-          <Button variant="ghost" onClick={() => setShowSettings(true)}>הגדרות</Button>
-          <Button variant="ghost" onClick={() => setShowAbout(true)}>אודות</Button>
-        </div>
+        <div className="mr-2" style={{ width: 40, height: 40 }} aria-hidden />
       </div>
-      {/* Main content */}
+      {/* Main content / sidebar + menu */}
       <main className="flex-1 flex flex-col items-center justify-start p-2 max-w-md w-full mx-auto">
         <Card className="w-full mt-4">
           <CardContent className="p-4">
@@ -98,6 +95,15 @@ function App() {
           </CardContent>
         </Card>
       </main>
+      {/* Bottombar */}
+      <div className="flex items-center justify-between p-2 border-t bg-white/80 sticky bottom-0 z-10">
+        <Button variant="ghost" onClick={() => setShowAbout(true)} aria-label="About">
+          <span className="material-symbols-outlined">info</span>
+        </Button>
+        <Button variant="ghost" onClick={() => setShowSettings(true)} aria-label="Settings">
+          <span className="material-symbols-outlined">settings</span>
+        </Button>
+      </div>
       {/* Settings Dialog */}
       <Dialog open={showSettings} onOpenChange={setShowSettings}>
         <DialogContent>
