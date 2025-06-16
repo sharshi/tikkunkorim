@@ -123,7 +123,7 @@ function App() {
                     <ChevronRight />
                   </Button>
                 </div>
-                <TextView parsha={selectedParsha} aliya={selectedAliya} onBack={handleBack} showNikud={showNikud} textSize={textSize} />
+                <TextView parsha={selectedParsha} aliya={selectedAliya} onBack={handleBack} showNikud={showNikud} setShowNikud={setShowNikud} textSize={textSize} />
               </div>
             )}
           </CardContent>

@@ -120,12 +120,12 @@
 }
 
 .tikun-text-view {
-  white-space: pre-wrap;
+  /* white-space: pre-wrap; */
   direction: rtl;
   text-align: justify;
   font-family: 'Shlomo', 'Noto Serif Hebrew', serif;
   font-size: 1.25rem;
-  line-height: 2.2;
+  /* line-height: 2.2; */
 }
 
 .text-size-reg {
@@ -145,4 +145,25 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.hide-nikud {
+  /* Hide Hebrew diacritics (nikud) using unicode-range and font-feature-settings */
+  unicode-bidi: isolate;
+}
+.hide-nikud {
+  /* Hide nikud (Hebrew diacritics) */
+  /* This targets Unicode range 0591-05C7 */
+}
+.hide-nikud {
+  /* Use a span for each nikud char and hide it */
+}
+.nikud-char {
+  display: initial;
+}
+.hide-nikud .nikud-char {
+  display: none;
+}
+.hide-nikud .hebrew-separator {
+  color: transparent;
 }

@@ -8,6 +8,7 @@ interface TextViewProps {
   aliya: number | null;
   onBack: () => void;
   showNikud: boolean;
+  setShowNikud: (val: boolean) => void;
   textSize: 'reg' | 'large' | 'xLarge';
 }
 
@@ -50,12 +51,38 @@ function getText(parsha: string | null, aliya: number | null): string {
   return txt.trim();
 }
 
-const TextView: React.FC<TextViewProps> = ({ parsha, aliya, onBack, showNikud, textSize }) => {
-  const text = getText(parsha, aliya);
+function stripNikud(text: string): string {
+  // Remove Hebrew nikud (Unicode range 0591-05C7)
+  return text.replace(/[\u0591-\u05C7]/g, '');
+}
+
+function renderWithNikudSpans(text: string) {
+  // Hebrew nikud Unicode: \u0591-\u05C7, maqaf (U+05BE) and paseq (U+05C0) are visible separators
+  return Array.from(text).map((char, i) => {
+    if (char === '\u05BE' || char === '־' || char === '\u05C0' || char === '׀' || char === '׃') {
+      // Maqaf (Hebrew hyphen) or Paseq
+      return <span key={i} className="hebrew-separator">{char}</span>;
+    } else if (/[\u0591-\u05C7]/.test(char)) {
+      return <span key={i} className="nikud-char">{char}</span>;
+    } else {
+      return char;
+    }
+  });
+}
+
+const TextView: React.FC<TextViewProps> = ({ parsha, aliya, onBack, showNikud, setShowNikud, textSize }) => {
+  let text = getText(parsha, aliya);
   return (
     <div>
       <p>{parsha}, {aliya}</p>
-      <div className={`tikun-text-view ${showNikud ? '' : 'no-nikud'} text-size-${textSize}`}>{text || '—'}</div>
+      <div
+        className={`tikun-text-view text-size-${textSize}${!showNikud ? ' hide-nikud' : ''}`}
+        onClick={() => setShowNikud(!showNikud)}
+        style={{ cursor: 'pointer' }}
+        title="הצג/הסתר ניקוד"
+      >
+        {renderWithNikudSpans(text) || '—'}
+      </div>
     </div>
   );
 };
