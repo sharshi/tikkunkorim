@@ -1,0 +1,47 @@
+{
+  "name": "tikkun-korim-react",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A modern React application for Torah reading practice (Tikkun Korim)",
+  "keywords": [
+    "torah",
+    "hebrew",
+    "tikkun",
+    "korim",
+    "judaism",
+    "reading"
+  ],
+  "author": "Shafeh",
+  "type": "module",
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react-swc": "^3.7.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.8"
+  },
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

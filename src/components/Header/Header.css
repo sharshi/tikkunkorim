@@ -1,0 +1,116 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+  padding: 8px 16px;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-button {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.nav-button:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+.nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.amud-info {
+  font-weight: 500;
+  margin: 0 8px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.control-button {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.control-button:hover {
+  background-color: #f0f0f0;
+}
+
+.word-gap-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gap-button {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 2px 6px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.gap-button:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+.gap-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.gap-display {
+  font-size: 14px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .navigation {
+    order: 1;
+  }
+  
+  .controls {
+    order: 2;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'ShlomosemiStam';
+  src: url('./assets/fonts/Shlomo-semiStam-lehaderes.ttf') format('truetype');
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+/* Global Hebrew text styling */
+[dir="rtl"], .rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Ensure Hebrew font loads properly */
+.hebrew-text {
+  font-family: 'ShlomosemiStam', serif;
+  font-feature-settings: "liga" 1, "dlig" 1;
+}
+
+/* Loading states */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}

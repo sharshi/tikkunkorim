@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Hebrew text support */
+@font-face {
+  font-family: 'ShlomosemiStam';
+  src: url('./assets/fonts/Shlomo-semiStam-lehaderes.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html[dir="rtl"] {
+  direction: rtl;
+}
+
+* {
+  box-sizing: border-box;
+}

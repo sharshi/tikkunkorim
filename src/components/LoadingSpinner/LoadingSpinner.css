@@ -1,0 +1,60 @@
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.spinner-circle {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #007acc;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-spinner.small .spinner-circle {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+.loading-spinner.medium .spinner-circle {
+  width: 40px;
+  height: 40px;
+  border-width: 3px;
+}
+
+.loading-spinner.large .spinner-circle {
+  width: 60px;
+  height: 60px;
+  border-width: 4px;
+}
+
+.spinner-text {
+  margin-top: 16px;
+  font-family: 'ShlomosemiStam', serif;
+  color: #666;
+  direction: rtl;
+  text-align: center;
+}
+
+.loading-spinner.small .spinner-text {
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.loading-spinner.medium .spinner-text {
+  font-size: 18px;
+  margin-top: 12px;
+}
+
+.loading-spinner.large .spinner-text {
+  font-size: 24px;
+  margin-top: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

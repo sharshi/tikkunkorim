@@ -1,0 +1,67 @@
+.amud-display {
+  padding: 80px 16px 24px; /* space for fixed header */
+  max-width: 464px;
+  min-height: calc(100vh - 80px);
+}
+
+/* Make amud 78 lines 10% wider */
+.amud-display[data-amud="78"] {
+  max-width: 660px; /* 10% wider than default 600px */
+}
+
+.amud-content {
+  background: transparent;
+  border: none;
+  padding: 8px 16px; /* Reduced horizontal padding */
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.loading-spinner {
+  font-size: 24px;
+  font-family: 'ShlomosemiStam', serif;
+  color: #666;
+  text-align: center;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.error-message {
+  font-size: 20px;
+  font-family: 'ShlomosemiStam', serif;
+  color: #d32f2f;
+  text-align: center;
+  direction: rtl;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .amud-display {
+    padding: 100px 10px 20px; /* More top padding for mobile header */
+  }
+  
+  .amud-content {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .amud-display {
+    padding: 120px 5px 20px;
+  }
+  
+  .amud-content {
+    padding: 10px;
+    border-radius: 4px;
+  }
+}
