@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <div className="header">
       <div className="header-content">
-        <strong>Tikkun Sofrim</strong>
+        <strong>תִּקּוּן קוֹרִאים</strong>
         <div className="navigation">
           <button 
             onClick={() => onNavigateAmud('prev')}

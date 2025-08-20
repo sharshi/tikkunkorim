@@ -20,13 +20,20 @@
   justify-content: center;
   align-items: center;
   min-height: 400px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 .loading-spinner {
   font-size: 24px;
   font-family: 'ShlomosemiStam', serif;
-  color: #666;
+  color: #8b764c;
   text-align: center;
+  animation: pulse 2s infinite;
 }
 
 .error {
@@ -34,6 +41,12 @@
   justify-content: center;
   align-items: center;
   min-height: 400px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 .error-message {
@@ -42,6 +55,7 @@
   color: #d32f2f;
   text-align: center;
   direction: rtl;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive adjustments */
