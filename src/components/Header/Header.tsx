@@ -24,7 +24,7 @@ export const Header: React.FC<HeaderProps> = ({
     <div className="header">
       <div className="header-content">
         <strong>תִּקּוּן קוֹרִאים</strong>
-        <div className="navigation">
+        {/* <div className="navigation">
           <button 
             onClick={() => onNavigateAmud('prev')}
             disabled={currentAmud <= 1}
@@ -33,7 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
             &lt;&lt;
           </button>
           <span className="amud-info">
-            [Amud {currentAmud} of {totalAmudim}]
+            Amud {currentAmud} of {totalAmudim}
           </span>
           <button 
             onClick={() => onNavigateAmud('next')}
@@ -42,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             &gt;&gt;
           </button>
-        </div>
+        </div> */}
         <div className="controls">
           <button onClick={onToggleNikud} className="control-button">
             Nikud {showNikud ? 'ON' : 'OFF'}

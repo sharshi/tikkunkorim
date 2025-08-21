@@ -78,6 +78,7 @@ export const useTikkun = () => {
     toggleNikud,
     adjustWordGap,
     getCurrentAmudData,
-    totalAmudim: state.data.length
+    totalAmudim: state.data.length,
+    data: state.data // Expose data for infinite scroll
   };
 };

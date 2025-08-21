@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, AmudDisplay, Footer } from './components';
+import { Header, InfiniteAmudScroll, Footer } from './components';
 import { useTikkun } from './hooks/useTikkun';
 import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
 import './App.css';
@@ -14,10 +14,11 @@ function App() {
     navigateAmud,
     toggleNikud,
     adjustWordGap,
-    getCurrentAmudData
+    getCurrentAmudData,
+    data
   } = useTikkun();
 
-  // Add keyboard navigation
+  // Add keyboard navigation - simple navigation without auto-scroll
   useKeyboardNavigation({
     onPrevious: () => navigateAmud('prev'),
     onNext: () => navigateAmud('next'),
@@ -38,11 +39,14 @@ function App() {
         onToggleNikud={toggleNikud}
         onAdjustWordGap={adjustWordGap}
       />
-      <AmudDisplay
-        amud={currentAmudData}
+      <InfiniteAmudScroll
+        currentAmud={currentAmud}
+        totalAmudim={totalAmudim}
         showNikud={showNikud}
         wordGap={wordGap}
         isLoading={isLoading}
+        data={data}
+        onAmudChange={(amud) => navigateAmud(amud)}
       />
       <Footer />
     </div>

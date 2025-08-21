@@ -1,0 +1,150 @@
+.infinite-amud-scroll {
+  padding: 80px 16px 60px; /* space for fixed header and footer */
+  max-width: 600px; /* Set back to original default width */
+  margin: 0 auto;
+  /* Remove height restrictions for true infinite scroll */
+}
+
+/* Make container wider when it contains amud 78 (shirat hayam) */
+.infinite-amud-scroll.has-amud-78 {
+  max-width: 660px; /* 10% wider for shirat hayam */
+}
+
+.infinite-amud-scroll.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.amud-display {
+  padding: 40px 0;
+  position: relative;
+  /* Remove height restrictions and scroll-snap for natural scrolling */
+}
+
+.amud-display.current {
+  /* Highlight current amud */
+  position: relative;
+}
+
+.amud-display.current::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(135deg, #8b764c 0%, #6b5b3f 100%);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+/* Make amud 78 lines wider for shirat hayam */
+.amud-display[data-amud="78"] {
+  width: 100%; /* Use full width of the expanded container */
+}
+
+.amud-number {
+  font-family: 'ShlomosemiStam', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #8b764c;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #8b764c 0%, #6b5b3f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.amud-content {
+  background: transparent;
+  border: none;
+  padding: 8px 16px; /* Keep original protected padding */
+}
+
+.amud-placeholder {
+  min-height: 100vh;
+  padding: 40px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.amud-placeholder .amud-content {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+}
+
+.amud-placeholder .error-message {
+  font-size: 20px;
+  font-family: 'ShlomosemiStam', serif;
+  color: #d32f2f;
+  text-align: center;
+  direction: rtl;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .infinite-amud-scroll {
+    padding: 100px 10px 20px; /* More top padding for mobile header */
+    max-width: 100%;
+  }
+  
+  .amud-display {
+    padding: 20px 0;
+  }
+  
+  .amud-content {
+    padding: 15px;
+  }
+
+  .amud-number {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .infinite-amud-scroll {
+    padding: 120px 5px 20px;
+  }
+  
+  .amud-display {
+    padding: 16px 0;
+  }
+  
+  .amud-content {
+    padding: 10px;
+  }
+  
+  .amud-number {
+    font-size: 14px;
+  }
+}
+
+/* Remove scroll-snap and aggressive scrollbar styling for natural feel */
+/* Keep only basic styling */
+body {
+  scroll-behavior: smooth;
+}
+
+/* Loading state within scroll container */
+.infinite-amud-scroll .loading-spinner {
+  font-size: 24px;
+  font-family: 'ShlomosemiStam', serif;
+  color: #8b764c;
+  text-align: center;
+  animation: pulse 2s infinite;
+}

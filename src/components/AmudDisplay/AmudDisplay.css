@@ -1,5 +1,5 @@
 .amud-display {
-  padding: 80px 16px 24px; /* space for fixed header */
+  padding: 24px 16px 24px; /* space for fixed header */
   max-width: 464px;
   min-height: calc(100vh - 80px);
 }
