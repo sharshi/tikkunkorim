@@ -1,0 +1,530 @@
+/* Parsha Navigation Styles */
+.parsha-nav-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: none;
+  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.parsha-nav-toggle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 48px 0 rgba(31, 38, 135, 0.3);
+}
+
+.parsha-nav-toggle.active {
+  background: rgba(139, 118, 76, 0.95);
+}
+
+.hamburger-line {
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(135deg, #8b764c 0%, #6b5b3f 100%);
+  border-radius: 1px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.parsha-nav-toggle.active .hamburger-line {
+  background: white;
+}
+
+.parsha-nav-toggle.active .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(3px, 3px);
+}
+
+.parsha-nav-toggle.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.parsha-nav-toggle.active .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(3px, -3px);
+}
+
+/* Backdrop */
+.parsha-nav-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1050;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Main Navigation */
+.parsha-navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 420px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 8px 0 64px 0 rgba(31, 38, 135, 0.2);
+  z-index: 1100;
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.parsha-navigation.open {
+  transform: translateX(0);
+}
+
+.parsha-navigation::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(139, 118, 76, 0.05) 0%, rgba(107, 91, 63, 0.02) 100%);
+  pointer-events: none;
+}
+
+/* Header */
+.parsha-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(139, 118, 76, 0.1) 0%, rgba(107, 91, 63, 0.05) 100%);
+  border-bottom: 1px solid rgba(139, 118, 76, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.parsha-nav-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #8b764c 0%, #6b5b3f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.close-button {
+  background: rgba(139, 118, 76, 0.1);
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #8b764c;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background: rgba(139, 118, 76, 0.2);
+  transform: scale(1.1);
+}
+
+/* Content */
+.parsha-nav-content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 118, 76, 0.3) transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.parsha-nav-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.parsha-nav-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.parsha-nav-content::-webkit-scrollbar-thumb {
+  background: rgba(139, 118, 76, 0.3);
+  border-radius: 3px;
+}
+
+.parsha-nav-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 118, 76, 0.5);
+}
+
+/* Search */
+.search-container {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px 12px 44px;
+  border: 2px solid rgba(139, 118, 76, 0.2);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  direction: rtl;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #8b764c;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(139, 118, 76, 0.1);
+}
+
+.search-input::placeholder {
+  color: rgba(139, 118, 76, 0.6);
+  direction: rtl;
+}
+
+.search-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  color: rgba(139, 118, 76, 0.6);
+}
+
+/* Current Selection */
+.current-selection {
+  background: linear-gradient(135deg, rgba(139, 118, 76, 0.1) 0%, rgba(107, 91, 63, 0.05) 100%);
+  border: 1px solid rgba(139, 118, 76, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  direction: rtl;
+}
+
+.current-label {
+  display: block;
+  font-size: 0.9rem;
+  color: rgba(139, 118, 76, 0.8);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.current-path {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.current-sefer, .current-parsha, .current-aliya {
+  padding: 4px 8px;
+  background: rgba(139, 118, 76, 0.15);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b5b3f;
+}
+
+.separator {
+  color: rgba(139, 118, 76, 0.6);
+  font-weight: bold;
+}
+
+/* Navigation Sections */
+.nav-section {
+  margin-bottom: 32px;
+}
+
+.nav-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #6b5b3f;
+  direction: rtl;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.nav-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(135deg, #8b764c 0%, #6b5b3f 100%);
+  border-radius: 1px;
+}
+
+/* Seforim Grid */
+.seforim-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.sefer-button {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(139, 118, 76, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: right;
+  direction: rtl;
+  position: relative;
+  overflow: hidden;
+}
+
+.sefer-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(139, 118, 76, 0.05) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sefer-button:hover::before,
+.sefer-button.selected::before {
+  opacity: 1;
+}
+
+.sefer-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px 0 rgba(139, 118, 76, 0.2);
+  border-color: rgba(139, 118, 76, 0.4);
+}
+
+.sefer-button.selected {
+  background: rgba(139, 118, 76, 0.1);
+  border-color: #8b764c;
+  box-shadow: 0 4px 16px 0 rgba(139, 118, 76, 0.2);
+}
+
+.sefer-button.current {
+  background: linear-gradient(135deg, rgba(139, 118, 76, 0.15) 0%, rgba(107, 91, 63, 0.1) 100%);
+  border-color: #8b764c;
+  box-shadow: 0 0 0 3px rgba(139, 118, 76, 0.1);
+}
+
+.sefer-name {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #6b5b3f;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.sefer-count {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(139, 118, 76, 0.7);
+  position: relative;
+  z-index: 1;
+}
+
+/* Parshios Grid */
+.parshios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.parsha-button {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(139, 118, 76, 0.2);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: right;
+  direction: rtl;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 50px;
+}
+
+.parsha-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px 0 rgba(139, 118, 76, 0.15);
+  border-color: rgba(139, 118, 76, 0.4);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.parsha-button.selected {
+  background: rgba(139, 118, 76, 0.1);
+  border-color: #8b764c;
+  box-shadow: 0 2px 8px 0 rgba(139, 118, 76, 0.2);
+}
+
+.parsha-button.current {
+  background: linear-gradient(135deg, rgba(139, 118, 76, 0.15) 0%, rgba(107, 91, 63, 0.1) 100%);
+  border-color: #8b764c;
+  box-shadow: 0 0 0 2px rgba(139, 118, 76, 0.1);
+}
+
+.parsha-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #6b5b3f;
+  flex: 1;
+}
+
+.aliya-indicator {
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+/* Aliyos Grid */
+.aliyos-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.aliya-button {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(139, 118, 76, 0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: right;
+  direction: rtl;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.aliya-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px 0 rgba(139, 118, 76, 0.15);
+  border-color: rgba(139, 118, 76, 0.4);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.aliya-button.current {
+  background: linear-gradient(135deg, rgba(139, 118, 76, 0.15) 0%, rgba(107, 91, 63, 0.1) 100%);
+  border-color: #8b764c;
+  box-shadow: 0 0 0 2px rgba(139, 118, 76, 0.1);
+}
+
+.aliya-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6b5b3f;
+}
+
+.aliya-range {
+  font-size: 0.85rem;
+  color: rgba(139, 118, 76, 0.8);
+  font-family: 'Courier New', monospace;
+  direction: ltr;
+}
+
+/* Quick Actions */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.quick-action-button {
+  background: linear-gradient(135deg, rgba(139, 118, 76, 0.1) 0%, rgba(107, 91, 63, 0.05) 100%);
+  border: 1px solid rgba(139, 118, 76, 0.3);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b5b3f;
+}
+
+.quick-action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(139, 118, 76, 0.2);
+  background: linear-gradient(135deg, rgba(139, 118, 76, 0.15) 0%, rgba(107, 91, 63, 0.08) 100%);
+  border-color: rgba(139, 118, 76, 0.5);
+}
+
+.quick-action-button span {
+  font-size: 1.2rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .parsha-navigation {
+    width: 100vw;
+    max-width: 360px;
+  }
+  
+  .parshios-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .parsha-nav-content {
+    padding: 16px;
+  }
+  
+  .parsha-nav-header {
+    padding: 16px;
+  }
+  
+  .parsha-nav-header h2 {
+    font-size: 1.3rem;
+  }
+}

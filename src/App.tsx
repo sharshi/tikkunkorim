@@ -1,5 +1,5 @@
-import React from 'react';
-import { Header, InfiniteAmudScroll, Footer } from './components';
+import React, { useState } from 'react';
+import { Header, InfiniteAmudScroll, Footer, ParshaNavigation } from './components';
 import { useTikkun } from './hooks/useTikkun';
 import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
 import './App.css';
@@ -18,6 +18,8 @@ function App() {
     data
   } = useTikkun();
 
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
   // Add keyboard navigation - simple navigation without auto-scroll
   useKeyboardNavigation({
     onPrevious: () => navigateAmud('prev'),
@@ -28,8 +30,25 @@ function App() {
 
   const currentAmudData = getCurrentAmudData();
 
+  const handleParshaSelect = (sefer: string, parsha: string, aliya?: number) => {
+    // This is where you would implement the logic to navigate to a specific parsha/aliya
+    // For now, we'll just log the selection
+    console.log('Selected:', { sefer, parsha, aliya });
+    
+    // You could extend the useTikkun hook to support parsha navigation
+    // For example: navigateToParsha(sefer, parsha, aliya);
+  };
+
   return (
     <div className="App rtl">
+      <ParshaNavigation
+        isOpen={isNavOpen}
+        onToggle={() => setIsNavOpen(!isNavOpen)}
+        onParshaSelect={handleParshaSelect}
+        currentSefer="בראשית" // You could track this in your state
+        currentParsha="בראשית" // You could track this in your state
+        currentAliya={1} // You could track this in your state
+      />
       <Header
         currentAmud={currentAmud}
         totalAmudim={totalAmudim}
