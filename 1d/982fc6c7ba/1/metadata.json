@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "1d982fc6c7ba",
+  "session_id": "506ac8d6-642d-4fb7-a753-0ceae8fb944f",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-11T17:17:43.153006Z",
+  "branch": "new-design",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/App.tsx",
+    "src/hooks/useHashRouter.ts"
+  ],
+  "agent": "Claude Code",
+  "token_usage": {
+    "input_tokens": 23,
+    "cache_creation_tokens": 39574,
+    "cache_read_tokens": 904604,
+    "output_tokens": 1857,
+    "api_call_count": 21
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-11T17:17:43.137046Z",
+    "agent_lines": 189,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 189,
+    "agent_percentage": 100
+  }
+}

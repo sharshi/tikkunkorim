@@ -1,0 +1,105 @@
+Implement the following plan:
+
+# Plan: Hash-Based URL Navigation
+
+## Context
+The app has zero URL awareness -- all navigation state (current amud, parsha, aliya) lives in React state inside `useTikkun`. When you navigate to a parsha or scroll to amud 150, the URL bar still shows `/`. You can't bookmark, share, or refresh without losing your place. This adds hash-based URL routing (`/#/amud/42`, `/#/בראשית/בראשית/3`) with zero dependencies, compatible with GitHub Pages.
+
+## URL Scheme
+
+| State | URL | Example |
+|-------|-----|---------|
+| Home (amud 1) | `/#/` or just `/` | |
+| Specific amud | `/#/amud/{n}` | `/#/amud/78` |
+| Parsha (aliya 1) | `/#/{sefer}/{parsha}` | `/#/בראשית/נח` |
+| Parsha + aliya | `/#/{sefer}/{parsha}/{aliya}` | `/#/שמות/בשלח/4` |
+
+- Hebrew names go directly in the hash (browsers handle Unicode in fragments natively; no encoding needed for display)
+- Amud number is the "low-level" address; parsha/aliya is the "semantic" address
+- Both formats are supported: navigating by amud updates the URL to `/#/amud/N`, navigating by parsha updates to `/#/{sefer}/{parsha}/{aliya}`
+
+## Approach: Single New Hook
+
+**No new dependencies.** One new hook `useHashRouter` handles all two-way sync between `window.location.hash` and the app's navigation state. The existing `useTikkun` hook stays as-is -- the router sits *on top* of it in `App.tsx`.
+
+### New file: `src/hooks/useHashRouter.ts`
+
+Responsibilities:
+1. **On mount**: parse `window.location.hash`, call the appropriate `useTikkun` navigation function to restore state
+2. **On state change**: when `currentAmud` or `currentParsha` changes, update `window.location.hash` (using `replaceState` for scroll-driven changes, `pushState`-equivalent for explicit navigations)
+3. **On `hashchange` event**: when user hits back/forward or edits the URL, parse the new hash and navigate accordingly
+4. **Debouncing**: scroll-driven amud changes (from `IntersectionObserver` in `InfiniteAmudScroll`) fire rapidly -- debounce hash updates to avoid polluting browser history
+
+### Key design decisions:
+- **`replaceState` vs `pushState`**: Scroll-driven amud changes use `history.replaceState` (doesn't add history entries). Explicit user actions (parsha select, keyboard nav) use real hash changes that create history entries for back/forward.
+- **Source-of-truth**: `useTikkun` state remains the source of truth. The hash is a *reflection* of that state, not a driver of it (except on initial load and popstate/hashchange).
+- **Guard against loops**: A ref tracks whether a hash change was triggered programmatically vs by user, preventing infinite update cycles.
+
+## Files to Modify
+
+1. **Create** `src/hooks/useHashRouter.ts` -- the new hook
+2. **Modify** `src/App.tsx` -- wire `useHashRouter` into the existing navigation flow
+3. **Modify** `src/hooks/useTikkun.ts` -- expose a `navigateFromUrl` callback that accepts parsed URL state and applies it once data is loaded (handles the case where hash is parsed before tikkunData finishes loading)
+
+## Detailed Implementation
+
+### `src/hooks/useHashRouter.ts`
+
+```
+function parseHash(hash: string):
+  | { type: 'amud'; amud: number }
+  | { type: 'parsha'; sefer: string; parsha: string; aliya?: number }
+  | null
+
+function buildHash(state):
+  string  // e.g. "#/amud/42" or "#/בראשית/נח/3"
+
+export function useHashRouter({ currentAmud, currentParsha, isLoading, data, navigateAmud, navigateToParsha }):
+  - On mount: parse hash, store as pendingNavigation ref
+  - When data loads (isLoading transitions false): apply pendingNavigation
+  - On hashchange: parse new hash, navigate if different from current state
+  - On state change: update hash (replaceState for amud-only, push for parsha)
+  - Debounce amud-only updates (300ms) to avoid history spam from scrolling
+```
+
+### `src/App.tsx` changes
+
+Minimal -- just add the hook call:
+```tsx
+useHashRouter({
+  currentAmud,
+  currentParsha,
+  isLoading,
+  data,
+  navigateAmud,
+  navigateToParsha,
+});
+```
+
+### `src/hooks/useTikkun.ts` changes
+
+None needed -- the existing `navigateAmud(number)` and `navigateToParsha(sefer, parsha, aliya?)` APIs are sufficient. The router hook calls them directly.
+
+## Edge Cases
+
+- **Initial load with hash**: Data takes ~1s to lazy-load. Hash is parsed immediately but navigation is deferred until `isLoading` becomes `false`.
+- **Invalid hash**: Silently ignored -- app loads at amud 1 (same as no hash). No redirect, no error message.
+- **Hebrew encoding**: `decodeURIComponent` handles any %-encoded Hebrew in the hash. Browsers typically don't encode hash fragments, but we handle both.
+- **Scroll-driven amud changes**: `InfiniteAmudScroll`'s `IntersectionObserver` fires `onAmudChange` as user scrolls. These update the hash via `replaceState` (debounced) so the URL stays current without creating back-button entries for every amud scrolled past.
+- **Back/forward**: Navigating browser history fires `hashchange`, which triggers the appropriate navigation function. Works naturally.
+
+## Verification
+
+1. `npx tsc --noEmit` -- zero errors
+2. Load `/#/amud/78` -- app scrolls to amud 78 (shirat hayam)
+3. Load `/#/בראשית/נח/3` -- app navigates to Noach, aliya 3
+4. Click a parsha in nav panel -- URL updates to `/#/{sefer}/{parsha}/{aliya}`
+5. Scroll through pages -- URL updates to `/#/amud/{n}` (debounced, no history spam)
+6. Hit browser back button -- returns to previous navigation state
+7. Refresh page -- same position restored
+8. Load `/` with no hash -- starts at amud 1 as before
+9. Load `/#/garbage` -- ignored, app loads at amud 1 normally
+10. Keyboard navigation (arrows, j/k) -- URL updates
+
+
+If you need specific details from before exiting plan mode (like exact code snippets, error messages, or content you generated), read the full transcript at: /Users/shafeh/.REDACTED.jsonl

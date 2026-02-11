@@ -3,7 +3,7 @@
   "checkpoint_id": "1d982fc6c7ba",
   "strategy": "manual-commit",
   "branch": "new-design",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "src/App.css",
     "src/App.tsx",
@@ -20,6 +20,7 @@
     "src/components/ParshaNavigation/ParshaNavigation.tsx",
     "src/components/TextLine/TextLine.css",
     "src/components/Toast/Toast.css",
+    "src/hooks/useHashRouter.ts",
     "src/i18n/LanguageContext.tsx",
     "src/i18n/index.ts",
     "src/i18n/translations.ts",
@@ -33,13 +34,20 @@
       "context": "/1d/982fc6c7ba/0/context.md",
       "content_hash": "/1d/982fc6c7ba/0/content_hash.txt",
       "prompt": "/1d/982fc6c7ba/0/prompt.txt"
+    },
+    {
+      "metadata": "/1d/982fc6c7ba/1/metadata.json",
+      "transcript": "/1d/982fc6c7ba/1/full.jsonl",
+      "context": "/1d/982fc6c7ba/1/context.md",
+      "content_hash": "/1d/982fc6c7ba/1/content_hash.txt",
+      "prompt": "/1d/982fc6c7ba/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 21,
-    "cache_creation_tokens": 26322,
-    "cache_read_tokens": 2482782,
-    "output_tokens": 1202,
-    "api_call_count": 17
+    "input_tokens": 44,
+    "cache_creation_tokens": 65896,
+    "cache_read_tokens": 3387386,
+    "output_tokens": 3059,
+    "api_call_count": 38
   }
 }
