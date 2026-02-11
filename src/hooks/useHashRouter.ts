@@ -155,7 +155,9 @@ export function useHashRouter({
       clearTimeout(debounceTimer.current);
     }
     debounceTimer.current = setTimeout(() => {
-      const hash = buildAmudHash(currentAmud);
+      const hash = currentParsha
+        ? buildParshaHash(currentParsha)
+        : buildAmudHash(currentAmud);
       history.replaceState(null, '', hash);
     }, 300);
   }, [currentAmud, currentParsha, isLoading, isExplicitNav]);

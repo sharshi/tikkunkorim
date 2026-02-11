@@ -89,18 +89,24 @@ export const InfiniteAmudScroll: React.FC<InfiniteAmudScrollProps> = ({
     }, 150);
   }, []);
 
-  // Scroll when currentAmud or targetLine changes
+  // Track whether the last amud change came from the scroll observer so
+  // we can skip the programmatic scrollToAmudAndLine (the amud is already
+  // in view -- re-centering it would fight the user's manual scroll).
+  const scrollDrivenChange = useRef(false);
+
+  // Scroll when currentAmud or targetLine changes (programmatic navigation only)
   const isInitialRender = useRef(true);
   useEffect(() => {
     if (currentAmud && data.length > 0) {
-      // On the first data load, skip scrolling if we're at the default
-      // position (amud 1, no target line). We're already there, and
-      // scrollIntoView({ block: 'center' }) would nudge the viewport.
-      // If the hash router needs a different position, it will trigger
-      // a subsequent state change that scrolls correctly.
       if (isInitialRender.current) {
         isInitialRender.current = false;
         if (currentAmud === 1 && !targetLine) return;
+      }
+      // Skip scroll when the change came from the IntersectionObserver --
+      // the amud is already visible, scrollIntoView would just fight the user.
+      if (scrollDrivenChange.current) {
+        scrollDrivenChange.current = false;
+        return;
       }
       requestAnimationFrame(() => {
         scrollToAmudAndLine(currentAmud, targetLine);
@@ -116,19 +122,22 @@ export const InfiniteAmudScroll: React.FC<InfiniteAmudScrollProps> = ({
       (entries) => {
         if (isScrollingRef.current) return;
 
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
             const amudNumber = parseInt(entry.target.getAttribute('data-amud') || '0');
             if (amudNumber && amudNumber !== currentAmud) {
+              scrollDrivenChange.current = true;
               onAmudChange(amudNumber);
+              break;
             }
           }
-        });
+        }
       },
       {
         root: null,
-        rootMargin: '-40% 0px -40% 0px',
-        threshold: [0.6]
+        // Narrow detection band in the center of the viewport
+        rootMargin: '-45% 0px -45% 0px',
+        threshold: [0]
       }
     );
 
