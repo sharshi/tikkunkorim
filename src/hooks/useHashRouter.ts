@@ -67,7 +67,6 @@ export function useHashRouter({
 }: UseHashRouterOptions) {
   const pendingNavigation = useRef<ParsedHash>(null);
   const skipNextSync = useRef(false);
-  const programmaticHashChange = useRef(false);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const initialLoadDone = useRef(false);
 
@@ -100,15 +99,11 @@ export function useHashRouter({
     }
   }, [isLoading, navigateAmud, navigateToParsha]);
 
-  // Listen for hashchange (browser back/forward, manual URL edit)
+  // Listen for back/forward navigation and manual URL edits.
+  // pushState/replaceState don't fire hashchange, so this only triggers
+  // from genuine user actions (browser back/forward, editing the URL bar).
   useEffect(() => {
-    const handleHashChange = () => {
-      // Ignore hash changes we triggered ourselves
-      if (programmaticHashChange.current) {
-        programmaticHashChange.current = false;
-        return;
-      }
-
+    const handleNavigation = () => {
       const parsed = parseHash(window.location.hash);
       if (!parsed) return;
 
@@ -122,8 +117,12 @@ export function useHashRouter({
       }
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleNavigation);
+    window.addEventListener('hashchange', handleNavigation);
+    return () => {
+      window.removeEventListener('popstate', handleNavigation);
+      window.removeEventListener('hashchange', handleNavigation);
+    };
   }, [navigateAmud, navigateToParsha]);
 
   // Sync state changes -> hash
@@ -144,11 +143,10 @@ export function useHashRouter({
         clearTimeout(debounceTimer.current);
       }
 
-      programmaticHashChange.current = true;
       const hash = currentParsha
         ? buildParshaHash(currentParsha)
         : buildAmudHash(currentAmud);
-      window.location.hash = hash;
+      history.pushState(null, '', hash);
       return;
     }
 

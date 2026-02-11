@@ -90,8 +90,18 @@ export const InfiniteAmudScroll: React.FC<InfiniteAmudScrollProps> = ({
   }, []);
 
   // Scroll when currentAmud or targetLine changes
+  const isInitialRender = useRef(true);
   useEffect(() => {
     if (currentAmud && data.length > 0) {
+      // On the first data load, skip scrolling if we're at the default
+      // position (amud 1, no target line). We're already there, and
+      // scrollIntoView({ block: 'center' }) would nudge the viewport.
+      // If the hash router needs a different position, it will trigger
+      // a subsequent state change that scrolls correctly.
+      if (isInitialRender.current) {
+        isInitialRender.current = false;
+        if (currentAmud === 1 && !targetLine) return;
+      }
       requestAnimationFrame(() => {
         scrollToAmudAndLine(currentAmud, targetLine);
       });
