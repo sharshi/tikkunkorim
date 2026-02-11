@@ -69,31 +69,9 @@
   padding: 8px 16px; /* Keep original protected padding */
 }
 
+/* Off-screen amudim: lightweight empty div that holds scroll space */
 .amud-placeholder {
-  min-height: 100vh;
-  padding: 40px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.amud-placeholder .amud-content {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  padding: 32px;
-}
-
-.amud-placeholder .error-message {
-  font-size: 20px;
-  font-family: 'ShlomosemiStam', serif;
-  color: #d32f2f;
-  text-align: center;
-  direction: rtl;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 85vh; /* approximate real amud height to keep scroll stable */
 }
 
 /* Responsive adjustments */

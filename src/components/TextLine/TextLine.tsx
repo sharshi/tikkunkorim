@@ -9,7 +9,7 @@ interface TextLineProps {
   wordGap: number;
 }
 
-export const TextLine: React.FC<TextLineProps> = ({ line, showNikud, wordGap }) => {
+export const TextLine: React.FC<TextLineProps> = React.memo(({ line, showNikud, wordGap }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   
   const processedFragments = useMemo(() => {
@@ -56,4 +56,4 @@ export const TextLine: React.FC<TextLineProps> = ({ line, showNikud, wordGap }) 
       )}
     </div>
   );
-};
+});
