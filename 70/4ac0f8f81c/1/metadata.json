@@ -1,0 +1,36 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "704ac0f8f81c",
+  "session_id": "7d1d969a-02aa-4e29-a7fe-147b21a51646",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-11T16:57:25.016768Z",
+  "branch": "new-design",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "src/components/InfiniteAmudScroll/InfiniteAmudScroll.css",
+    "src/components/InfiniteAmudScroll/InfiniteAmudScroll.tsx",
+    "src/components/TextLine/TextLine.tsx",
+    "src/types/index.ts",
+    "src/utils/navigationUtils.ts"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "e78c0aca-5323-4b1b-a771-8cc93172f080",
+  "checkpoint_transcript_start": 233,
+  "transcript_lines_at_start": 233,
+  "token_usage": {
+    "input_tokens": 9,
+    "cache_creation_tokens": 19729,
+    "cache_read_tokens": 337088,
+    "output_tokens": 642,
+    "api_call_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-11T16:57:24.941092Z",
+    "agent_lines": 21,
+    "human_added": 769,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 790,
+    "agent_percentage": 2.6582278481012658
+  }
+}
