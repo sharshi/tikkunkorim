@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Header, InfiniteAmudScroll, Footer, ParshaNavigation, Toast } from './components';
 import { useTikkun } from './hooks/useTikkun';
 import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
+import { useHashRouter } from './hooks/useHashRouter';
 import { useLanguage, interpolate } from './i18n';
 import './App.css';
 
@@ -25,6 +26,17 @@ function App() {
     data
   } = useTikkun();
 
+  const isExplicitNav = useRef(false);
+
+  useHashRouter({
+    currentAmud,
+    currentParsha,
+    isLoading,
+    navigateAmud,
+    navigateToParsha,
+    isExplicitNav,
+  });
+
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string>('');
   const [showToast, setShowToast] = useState(false);
@@ -39,10 +51,12 @@ function App() {
     onPrevious: () => navigateAmud('prev'),
     onNext: () => navigateAmud('next'),
     onPreviousParsha: () => {
+      isExplicitNav.current = true;
       navigateParshaDirection('prev');
       showNavigationFeedback(t.previousParsha);
     },
     onNextParsha: () => {
+      isExplicitNav.current = true;
       navigateParshaDirection('next');
       showNavigationFeedback(t.nextParsha);
     },
@@ -72,6 +86,7 @@ function App() {
 
   const handleParshaSelect = (sefer: string, parsha: string, aliya?: number) => {
     console.log('Navigating to:', { sefer, parsha, aliya });
+    isExplicitNav.current = true;
     navigateToParsha(sefer, parsha, aliya);
     setIsNavOpen(false);
 
