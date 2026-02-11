@@ -1,7 +1,7 @@
 export interface Meta {
-  sefer: number;
-  perek: number;
-  pasuk: number;
+  sefer: number | null;
+  perek: number | null;
+  pasuk: number | null;
 }
 
 export interface Line {

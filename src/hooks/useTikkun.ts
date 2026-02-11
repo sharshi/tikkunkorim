@@ -11,6 +11,7 @@ import {
 
 export interface TikkunState {
   currentAmud: number;
+  targetLine?: number; // Add target line for precise scrolling
   showNikud: boolean;
   wordGap: number;
   data: Amud[];
@@ -21,6 +22,7 @@ export interface TikkunState {
 export const useTikkun = () => {
   const [state, setState] = useState<TikkunState>({
     currentAmud: 1,
+    targetLine: undefined,
     showNikud: true,
   wordGap: 6, // legacy default maxGap
     data: [],
@@ -81,6 +83,7 @@ export const useTikkun = () => {
       return { 
         ...prev, 
         currentAmud: newAmud,
+        targetLine: undefined, // Clear target line for regular amud navigation
         currentParsha: newParsha || prev.currentParsha
       };
     });
@@ -94,10 +97,11 @@ export const useTikkun = () => {
       
       if (location) {
         const newParsha: ParshaLocation = { sefer, parsha, aliya };
-        console.log('Navigating to amud:', location.amud);
+        console.log('Navigating to amud:', location.amud, 'line:', location.line);
         return {
           ...prev,
           currentAmud: location.amud,
+          targetLine: location.line,
           currentParsha: newParsha
         };
       }

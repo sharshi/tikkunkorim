@@ -139,8 +139,8 @@ export function getCurrentParshaFromAmud(
     );
   }
   
-  if (!targetLine || !targetLine.meta.length) return null;
-  
+  if (!targetLine || !targetLine.meta.length || !hasCompleteMeta(targetLine.meta[0])) return null;
+
   const meta = targetLine.meta[0];
   const seferName = seforim[meta.sefer - 1];
   if (!seferName) return null;
@@ -181,8 +181,8 @@ export function getCurrentParshaFromAmud(
 /**
  * Check if meta data is complete (has all required fields)
  */
-function hasCompleteMeta(meta: any): boolean {
-  return meta && meta.sefer && meta.perek !== null && meta.pasuk !== null;
+function hasCompleteMeta(meta: Meta): meta is Meta & { sefer: number; perek: number; pasuk: number } {
+  return meta != null && meta.sefer != null && meta.perek != null && meta.pasuk != null;
 }
 
 /**

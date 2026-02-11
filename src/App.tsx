@@ -12,6 +12,7 @@ function App() {
     isLoading,
     totalAmudim,
     currentParsha,
+    targetLine,
     navigateAmud,
     navigateToParsha,
     navigateParshaDirection,
@@ -104,6 +105,7 @@ function App() {
         wordGap={wordGap}
         isLoading={isLoading}
         data={data}
+        targetLine={targetLine}
         onAmudChange={(amud) => navigateAmud(amud)}
       />
       <Footer />
