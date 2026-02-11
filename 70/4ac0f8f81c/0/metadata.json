@@ -1,0 +1,48 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "704ac0f8f81c",
+  "session_id": "29837145-af25-4b4f-accb-a5ba30e04c6d",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-11T16:57:24.901641Z",
+  "branch": "new-design",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/App.css",
+    "src/App.tsx",
+    "src/components/AmudDisplay/AmudDisplay.css",
+    "src/components/AmudDisplay/AmudDisplay.tsx",
+    "src/components/Footer/Footer.css",
+    "src/components/Footer/Footer.tsx",
+    "src/components/Header/Header.css",
+    "src/components/Header/Header.tsx",
+    "src/components/InfiniteAmudScroll/InfiniteAmudScroll.css",
+    "src/components/InfiniteAmudScroll/InfiniteAmudScroll.tsx",
+    "src/components/LoadingSpinner/LoadingSpinner.css",
+    "src/components/ParshaNavigation/ParshaNavigation.css",
+    "src/components/ParshaNavigation/ParshaNavigation.tsx",
+    "src/components/TextLine/TextLine.css",
+    "src/components/Toast/Toast.css",
+    "src/i18n/LanguageContext.tsx",
+    "src/i18n/index.ts",
+    "src/i18n/translations.ts",
+    "src/index.css",
+    "src/index.tsx"
+  ],
+  "agent": "Claude Code",
+  "token_usage": {
+    "input_tokens": 72,
+    "cache_creation_tokens": 115735,
+    "cache_read_tokens": 6023428,
+    "output_tokens": 14554,
+    "api_call_count": 70
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-11T16:57:24.834552Z",
+    "agent_lines": 790,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 790,
+    "agent_percentage": 100
+  }
+}
