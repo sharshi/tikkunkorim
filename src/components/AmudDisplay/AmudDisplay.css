@@ -1,69 +1,50 @@
 .amud-display {
-  padding: 24px 16px 24px; /* space for fixed header */
+  padding: 24px 16px;
   max-width: 464px;
   min-height: calc(100vh - 80px);
 }
 
-/* Make amud 78 lines 10% wider */
 .amud-display[data-amud="78"] {
-  max-width: 660px; /* 10% wider than default 600px */
+  max-width: 660px;
 }
 
 .amud-content {
   background: transparent;
   border: none;
-  padding: 8px 16px; /* Reduced horizontal padding */
+  padding: 8px 16px;
 }
 
-.loading {
+.amud-display.loading {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 400px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
 }
 
-.loading-spinner {
-  font-size: 24px;
-  font-family: 'ShlomosemiStam', serif;
-  color: #8b764c;
-  text-align: center;
-  animation: pulse 2s infinite;
-}
-
-.error {
+.amud-display.error {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 400px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
 }
 
 .error-message {
-  font-size: 20px;
-  font-family: 'ShlomosemiStam', serif;
-  color: #d32f2f;
+  font-size: 18px;
+  color: var(--color-error);
   text-align: center;
-  direction: rtl;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .amud-display {
-    padding: 100px 10px 20px; /* More top padding for mobile header */
+    padding: 100px 10px 20px;
   }
-  
+
   .amud-content {
     padding: 15px;
   }
@@ -73,9 +54,8 @@
   .amud-display {
     padding: 120px 5px 20px;
   }
-  
+
   .amud-content {
     padding: 10px;
-    border-radius: 4px;
   }
 }

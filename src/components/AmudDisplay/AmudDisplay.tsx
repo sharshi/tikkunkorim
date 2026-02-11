@@ -2,6 +2,7 @@ import React from 'react';
 import { Amud } from '../../types';
 import { TextLine } from '../TextLine/TextLine';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
+import { useLanguage } from '../../i18n';
 import './AmudDisplay.css';
 
 interface AmudDisplayProps {
@@ -17,10 +18,12 @@ export const AmudDisplay: React.FC<AmudDisplayProps> = ({
   wordGap,
   isLoading
 }) => {
+  const { t } = useLanguage();
+
   if (isLoading) {
     return (
       <div className="amud-display loading">
-        <LoadingSpinner message="טוען עמוד..." size="large" />
+        <LoadingSpinner message={t.loadingPage} size="large" />
       </div>
     );
   }
@@ -28,7 +31,7 @@ export const AmudDisplay: React.FC<AmudDisplayProps> = ({
   if (!amud) {
     return (
       <div className="amud-display error">
-        <div className="error-message">לא נמצא עמוד זה</div>
+        <div className="error-message">{t.pageNotFound}</div>
       </div>
     );
   }

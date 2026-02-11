@@ -1,7 +1,8 @@
+/* Torah text is ALWAYS RTL regardless of UI language */
 .text-line {
   font-family: 'ShlomosemiStam', serif;
   font-size: 14pt;
-  direction: rtl;
+  direction: rtl !important;
   margin: 0.1rem 0;
   padding: 0 8px;
   position: relative;
@@ -18,13 +19,13 @@
 }
 
 .text-fragment.word {
-  display: inline; /* Changed back to inline for proper text flow */
+  display: inline;
 }
 
-/* Different layout types */
+/* Layout types */
 .text-line.satum,
 .text-line[class*="satum"] {
-  text-align: left; /* Override default for satum */
+  text-align: left;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -32,7 +33,7 @@
 
 .text-line.satum .text-fragment,
 .text-line[class*="satum"] .text-fragment {
-  display: inline-block; /* Make fragments flexible for justify-between */
+  display: inline-block;
 }
 
 .text-line.patuch {
@@ -54,23 +55,23 @@
 .aliyah-marker {
   width: 8px;
   height: 8px;
-  background-color: #007acc;
+  background-color: var(--color-accent);
   border-radius: 50%;
   margin: 1px 0;
 }
 
-/* Right-side verse index like in reference (red alef-bet) */
+/* Right-side verse index (red Hebrew letters) */
 .verse-index {
   position: absolute;
   right: 0;
   top: 0;
-  color: #c00;
+  color: var(--color-pasuk);
   font-weight: 600;
   padding-left: 8px;
   transform: translateY(5%);
 }
 
-/* Legacy line labels (pasuk on right, aliyah on left) */
+/* Pasuk labels on right, aliyah labels on left — always in Torah RTL context */
 .labelright {
   position: absolute;
   right: -20px;
@@ -83,7 +84,7 @@
 }
 
 .labelright .pasuk {
-  color: #c00;
+  color: var(--color-pasuk);
   font-weight: 600;
   font-size: 14px;
   line-height: 1;
@@ -101,23 +102,22 @@
 }
 
 .labelleft .aliya {
-  color: #007acc;
+  color: var(--color-accent);
   font-weight: 600;
   font-size: 14px;
   line-height: 1;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .text-line {
-  font-size: 20px;
-  padding: 0 4px;
+    font-size: 20px;
+    padding: 0 4px;
   }
 }
 
 @media (max-width: 480px) {
   .text-line {
-  font-size: 18px;
-  line-height: 1.8;
+    font-size: 18px;
+    line-height: 1.8;
   }
 }

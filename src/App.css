@@ -4,6 +4,28 @@
   font-display: swap;
 }
 
+/* ── Design tokens ────────────────────────────────────── */
+:root {
+  --color-bg: #fafaf9;
+  --color-surface: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-secondary: #6b7280;
+  --color-accent: #1e3a5f;
+  --color-accent-light: #e8eef4;
+  --color-accent-hover: #2c5282;
+  --color-border: #e5e7eb;
+  --color-pasuk: #b91c1c;
+  --color-success: #059669;
+  --color-error: #dc2626;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --transition: 0.2s ease;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -18,126 +40,40 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .App {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f4f1e8 0%, #e8dcc0 100%);
-  background-attachment: fixed;
+  background: var(--color-bg);
   position: relative;
   overflow-x: hidden;
 }
 
-.App::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(139, 118, 76, 0.2) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(245, 235, 215, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(160, 140, 100, 0.15) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: -1;
-  animation: breathe 8s ease-in-out infinite;
-}
-
-@keyframes breathe {
-  0%, 100% { 
-    opacity: 0.7;
-    transform: scale(1);
-  }
-  50% { 
-    opacity: 1;
-    transform: scale(1.02);
-  }
-}
-
-/* Global Hebrew text styling */
-[dir="rtl"], .rtl {
-  direction: rtl;
-  text-align: right;
-}
-
-/* Ensure Hebrew font loads properly */
+/* Hebrew text styling — Torah text is ALWAYS RTL */
 .hebrew-text {
   font-family: 'ShlomosemiStam', serif;
   font-feature-settings: "liga" 1, "dlig" 1;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  direction: rtl !important;
 }
 
-/* Loading states */
+/* Utility keyframes */
 @keyframes fadeIn {
-  from { 
-    opacity: 0; 
-    transform: translateY(20px);
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0);
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200px 0;
-  }
-  100% {
-    background-position: calc(200px + 100%) 0;
-  }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 .fade-in {
-  animation: fadeIn 0.6s ease-out;
-}
-
-.shimmer {
-  background: linear-gradient(90deg, #f0f0f0 0px, #e0e0e0 40px, #f0f0f0 80px);
-  background-size: 200px;
-  animation: shimmer 1.5s infinite;
-}
-
-/* Glassmorphism effect */
-.glass-effect {
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-}
-
-/* Modern shadows */
-.elevated-1 {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-}
-
-.elevated-2 {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
-
-.elevated-3 {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
-
-/* Smooth transitions */
-.smooth-transition {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .App {
-    background-attachment: scroll;
-  }
+  animation: fadeIn 0.3s ease-out;
 }

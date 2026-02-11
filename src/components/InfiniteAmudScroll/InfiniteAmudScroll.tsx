@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import { Amud } from '../../types';
 import { TextLine } from '../TextLine/TextLine';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
+import { useLanguage } from '../../i18n';
 import './InfiniteAmudScroll.css';
 
 // Only render amudim within this many pages of the current view.
@@ -29,6 +30,7 @@ export const InfiniteAmudScroll: React.FC<InfiniteAmudScrollProps> = ({
   targetLine,
   onAmudChange
 }) => {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<number | undefined>(undefined);
@@ -129,7 +131,7 @@ export const InfiniteAmudScroll: React.FC<InfiniteAmudScrollProps> = ({
   if (isLoading) {
     return (
       <div className="infinite-amud-scroll loading">
-        <LoadingSpinner message="טוען עמודים..." size="large" />
+        <LoadingSpinner message={t.loadingPages} size="large" />
       </div>
     );
   }

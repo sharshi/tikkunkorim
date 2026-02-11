@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { seforim, parshios, aliyanames, aliyos } from '../../data/parshadata';
+import { useLanguage, interpolate } from '../../i18n';
 import './ParshaNavigation.css';
 
 interface ParshaNavigationProps {
@@ -19,11 +20,11 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
   isOpen,
   onToggle
 }) => {
+  const { t } = useLanguage();
   const [selectedSefer, setSelectedSefer] = useState<string>(currentSefer || seforim[0]);
   const [selectedParsha, setSelectedParsha] = useState<string>(currentParsha || '');
   const [showAliyos, setShowAliyos] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Update selected items when current props change
@@ -50,7 +51,7 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
   }, [isOpen, onToggle]);
 
   // Filter parshios based on search term
-  const filteredParshios = selectedSefer 
+  const filteredParshios = selectedSefer
     ? parshios[selectedSefer as keyof typeof parshios].filter(parsha =>
         parsha.includes(searchTerm) || parsha.toLowerCase().includes(searchTerm.toLowerCase())
       )
@@ -75,7 +76,7 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
     if (onParshaSelect && selectedParsha) {
       onParshaSelect(selectedSefer, selectedParsha, aliyaIndex + 1);
     }
-    onToggle(); // Close menu after selection
+    onToggle();
   };
 
   const getCurrentAliyaData = () => {
@@ -87,11 +88,9 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
 
   return (
     <>
-      {/* Backdrop */}
       {isOpen && <div className="parsha-nav-backdrop" onClick={onToggle} />}
-      
-      {/* Menu Toggle Button */}
-      <button 
+
+      <button
         className={`parsha-nav-toggle ${isOpen ? 'active' : ''}`}
         onClick={onToggle}
         aria-label="Toggle Parsha Navigation"
@@ -101,90 +100,84 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
         <span className="hamburger-line"></span>
       </button>
 
-      {/* Navigation Menu */}
-      <div 
+      <div
         ref={menuRef}
         className={`parsha-navigation ${isOpen ? 'open' : ''}`}
       >
         <div className="parsha-nav-header">
-          <h2>ניווט פרשיות</h2>
+          <h2>{t.parshaNavigation}</h2>
           <button className="close-button" onClick={onToggle}>
-            ✕
+            &#x2715;
           </button>
         </div>
 
         <div className="parsha-nav-content">
-          {/* Search Bar */}
+          {/* Search */}
           <div className="search-container">
             <input
               type="text"
-              placeholder="חפש פרשה..."
+              placeholder={t.searchParsha}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
             />
-            <span className="search-icon">🔍</span>
           </div>
 
-          {/* Current Selection Display */}
+          {/* Current selection */}
           {(currentSefer || currentParsha) && (
             <div className="current-selection">
-              <span className="current-label">נבחר כעת:</span>
+              <span className="current-label">{t.currentlySelected}</span>
               <div className="current-path">
-                {currentSefer && <span className="current-sefer">{currentSefer}</span>}
+                {currentSefer && <span className="current-sefer"><bdi>{currentSefer}</bdi></span>}
                 {currentParsha && (
                   <>
-                    <span className="separator">›</span>
-                    <span className="current-parsha">{currentParsha}</span>
+                    <span className="separator">&rsaquo;</span>
+                    <span className="current-parsha"><bdi>{currentParsha}</bdi></span>
                   </>
                 )}
                 {currentAliya && (
                   <>
-                    <span className="separator">›</span>
-                    <span className="current-aliya">{aliyanames[currentAliya - 1]}</span>
+                    <span className="separator">&rsaquo;</span>
+                    <span className="current-aliya"><bdi>{aliyanames[currentAliya - 1]}</bdi></span>
                   </>
                 )}
               </div>
             </div>
           )}
 
-          {/* Seforim Selection */}
+          {/* Seforim */}
           <div className="nav-section">
-            <h3>ספרים</h3>
+            <h3>{t.sefarim}</h3>
             <div className="seforim-grid">
               {seforim.map((sefer) => (
                 <button
                   key={sefer}
                   className={`sefer-button ${selectedSefer === sefer ? 'selected' : ''} ${currentSefer === sefer ? 'current' : ''}`}
                   onClick={() => handleSeferSelect(sefer)}
-                  onMouseEnter={() => setHoveredItem(sefer)}
-                  onMouseLeave={() => setHoveredItem(null)}
                 >
-                  <span className="sefer-name">{sefer}</span>
+                  <span className="sefer-name"><bdi>{sefer}</bdi></span>
                   <span className="sefer-count">
-                    {parshios[sefer as keyof typeof parshios].length} פרשיות
+                    {interpolate(t.parshaCount, { count: parshios[sefer as keyof typeof parshios].length })}
                   </span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Parshios Selection */}
+          {/* Parshios */}
           {selectedSefer && (
             <div className="nav-section">
-              <h3>פרשיות - {selectedSefer}</h3>
+              <h3>{t.parshios} &mdash; <bdi>{selectedSefer}</bdi></h3>
               <div className="parshios-grid">
                 {filteredParshios.map((parsha) => (
                   <button
                     key={parsha}
                     className={`parsha-button ${selectedParsha === parsha ? 'selected' : ''} ${currentParsha === parsha ? 'current' : ''}`}
                     onClick={() => handleParshaSelect(parsha)}
-                    onMouseEnter={() => setHoveredItem(parsha)}
-                    onMouseLeave={() => setHoveredItem(null)}
                   >
-                    <span className="parsha-name">{parsha}</span>
+                    <span className="parsha-name"><bdi>{parsha}</bdi></span>
                     {aliyos[parsha as keyof typeof aliyos] && (
-                      <span className="aliya-indicator">🔹</span>
+                      <span className="aliya-indicator" />
                     )}
                   </button>
                 ))}
@@ -192,16 +185,16 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
             </div>
           )}
 
-          {/* Aliyos Selection */}
+          {/* Aliyos */}
           {showAliyos && selectedParsha && getCurrentAliyaData() && (
             <div className="nav-section">
-              <h3>עליות - {selectedParsha}</h3>
+              <h3>{t.aliyos} &mdash; <bdi>{selectedParsha}</bdi></h3>
               <div className="aliyos-grid">
                 {aliyanames.map((aliyaName, index) => {
                   const aliyaData = getCurrentAliyaData();
                   const aliyaKey = (index + 1).toString();
                   const hasData = aliyaData && (aliyaData as any)[aliyaKey];
-                  
+
                   if (!hasData) return null;
 
                   return (
@@ -209,10 +202,8 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
                       key={index}
                       className={`aliya-button ${currentAliya === index + 1 ? 'current' : ''}`}
                       onClick={() => handleAliyaSelect(index)}
-                      onMouseEnter={() => setHoveredItem(`${aliyaName}-${index}`)}
-                      onMouseLeave={() => setHoveredItem(null)}
                     >
-                      <span className="aliya-name">{aliyaName}</span>
+                      <span className="aliya-name"><bdi>{aliyaName}</bdi></span>
                       <span className="aliya-range">
                         {(aliyaData as any)[aliyaKey]}
                       </span>
@@ -223,11 +214,11 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
             </div>
           )}
 
-          {/* Quick Actions */}
+          {/* Quick actions */}
           <div className="nav-section quick-actions">
-            <h3>פעולות מהירות</h3>
+            <h3>{t.quickActions}</h3>
             <div className="quick-actions-grid">
-              <button 
+              <button
                 className="quick-action-button"
                 onClick={() => {
                   setSelectedSefer(seforim[0]);
@@ -238,10 +229,9 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
                   onToggle();
                 }}
               >
-                <span>🏠</span>
-                התחלה
+                {t.start}
               </button>
-              <button 
+              <button
                 className="quick-action-button"
                 onClick={() => {
                   setSearchTerm('');
@@ -250,8 +240,7 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
                   setShowAliyos(false);
                 }}
               >
-                <span>🔄</span>
-                איפוס
+                {t.reset}
               </button>
             </div>
           </div>

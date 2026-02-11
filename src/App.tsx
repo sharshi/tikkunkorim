@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Header, InfiniteAmudScroll, Footer, ParshaNavigation, Toast } from './components';
 import { useTikkun } from './hooks/useTikkun';
 import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
+import { useLanguage, interpolate } from './i18n';
 import './App.css';
 
 function App() {
+  const { t, dir } = useLanguage();
+
   const {
     currentAmud,
     showNikud,
@@ -37,11 +40,11 @@ function App() {
     onNext: () => navigateAmud('next'),
     onPreviousParsha: () => {
       navigateParshaDirection('prev');
-      showNavigationFeedback('פרשה קודמת');
+      showNavigationFeedback(t.previousParsha);
     },
     onNextParsha: () => {
       navigateParshaDirection('next');
-      showNavigationFeedback('פרשה הבאה');
+      showNavigationFeedback(t.nextParsha);
     },
     onToggleNikud: toggleNikud,
     enabled: !isLoading
@@ -62,7 +65,6 @@ function App() {
           console.log('=== Testing Navigation ===');
           console.log('Current state:', { currentAmud, currentParsha });
           console.log('Available functions: navigateToParsha(sefer, parsha, aliya), navigateAmud(amudNumber), navigateParshaDirection("next"|"prev")');
-          console.log('Example: tikkunNav.navigateToParsha("בראשית", "בראשית", 1)');
         }
       };
     }
@@ -71,15 +73,15 @@ function App() {
   const handleParshaSelect = (sefer: string, parsha: string, aliya?: number) => {
     console.log('Navigating to:', { sefer, parsha, aliya });
     navigateToParsha(sefer, parsha, aliya);
-    setIsNavOpen(false); // Close navigation after selection
-    
-    // Show feedback
-    const aliyaText = aliya ? ` עליה ${aliya}` : '';
-    showNavigationFeedback(`נווט ל${parsha}${aliyaText}`);
+    setIsNavOpen(false);
+
+    const message = interpolate(t.navigatedTo, { parsha });
+    const aliyaText = aliya ? ` ${interpolate(t.aliya, { n: aliya })}` : '';
+    showNavigationFeedback(`${message}${aliyaText}`);
   };
 
   return (
-    <div className="App rtl">
+    <div className="App">
       <ParshaNavigation
         isOpen={isNavOpen}
         onToggle={() => setIsNavOpen(!isNavOpen)}
