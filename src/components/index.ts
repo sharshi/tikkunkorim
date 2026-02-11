@@ -5,3 +5,4 @@ export { TextLine } from './TextLine/TextLine';
 export { LoadingSpinner } from './LoadingSpinner/LoadingSpinner';
 export { Footer } from './Footer/Footer';
 export { ParshaNavigation } from './ParshaNavigation/ParshaNavigation';
+export { Toast } from './Toast/Toast';

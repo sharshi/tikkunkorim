@@ -26,6 +26,17 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  // Update selected items when current props change
+  useEffect(() => {
+    if (currentSefer && currentSefer !== selectedSefer) {
+      setSelectedSefer(currentSefer);
+    }
+    if (currentParsha && currentParsha !== selectedParsha) {
+      setSelectedParsha(currentParsha);
+      setShowAliyos(true);
+    }
+  }, [currentSefer, currentParsha, selectedSefer, selectedParsha]);
+
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

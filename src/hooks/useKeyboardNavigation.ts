@@ -4,6 +4,8 @@ interface UseKeyboardNavigationProps {
   onPrevious: () => void;
   onNext: () => void;
   onToggleNikud: () => void;
+  onPreviousParsha?: () => void;
+  onNextParsha?: () => void;
   enabled?: boolean;
 }
 
@@ -11,6 +13,8 @@ export const useKeyboardNavigation = ({
   onPrevious,
   onNext,
   onToggleNikud,
+  onPreviousParsha,
+  onNextParsha,
   enabled = true
 }: UseKeyboardNavigationProps) => {
   useEffect(() => {
@@ -34,6 +38,20 @@ export const useKeyboardNavigation = ({
           event.preventDefault();
           onNext();
           break;
+        case 'ArrowUp':
+        case 'k':
+          if (onPreviousParsha) {
+            event.preventDefault();
+            onPreviousParsha();
+          }
+          break;
+        case 'ArrowDown':
+        case 'j':
+          if (onNextParsha) {
+            event.preventDefault();
+            onNextParsha();
+          }
+          break;
         case 'n':
         case 'N':
           event.preventDefault();
@@ -51,5 +69,5 @@ export const useKeyboardNavigation = ({
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
-  }, [onPrevious, onNext, onToggleNikud, enabled]);
+  }, [onPrevious, onNext, onToggleNikud, onPreviousParsha, onNextParsha, enabled]);
 };

@@ -1,5 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Amud } from '../types';
+import { 
+  findAmudForParshaAliya, 
+  getCurrentParshaFromAmud, 
+  getNextParshaAliya,
+  ParshaLocation 
+} from '../utils/navigationUtils';
 // We'll lazy load the data to avoid importing a huge file immediately
 // import { tikkunData } from '../data/fullTikkunData';
 
@@ -9,6 +15,7 @@ export interface TikkunState {
   wordGap: number;
   data: Amud[];
   isLoading: boolean;
+  currentParsha?: ParshaLocation;
 }
 
 export const useTikkun = () => {
@@ -17,7 +24,8 @@ export const useTikkun = () => {
     showNikud: true,
   wordGap: 6, // legacy default maxGap
     data: [],
-    isLoading: true
+    isLoading: true,
+    currentParsha: undefined
   });
 
   // Load data on mount
@@ -40,6 +48,21 @@ export const useTikkun = () => {
     loadData();
   }, []);
 
+  // Update current parsha when data loads or amud changes
+  useEffect(() => {
+    if (state.data.length > 0 && !state.currentParsha) {
+      console.log('Detecting initial parsha for amud:', state.currentAmud);
+      const initialParsha = getCurrentParshaFromAmud(state.data, state.currentAmud);
+      console.log('Initial parsha detected:', initialParsha);
+      if (initialParsha) {
+        setState(prev => ({
+          ...prev,
+          currentParsha: initialParsha
+        }));
+      }
+    }
+  }, [state.data, state.currentAmud, state.currentParsha]);
+
   const navigateAmud = useCallback((direction: 'next' | 'prev' | number) => {
     setState(prev => {
       let newAmud = prev.currentAmud;
@@ -52,7 +75,60 @@ export const useTikkun = () => {
         newAmud = Math.max(1, Math.min(direction, prev.data.length));
       }
       
-      return { ...prev, currentAmud: newAmud };
+      // Update current parsha when amud changes
+      const newParsha = getCurrentParshaFromAmud(prev.data, newAmud);
+      
+      return { 
+        ...prev, 
+        currentAmud: newAmud,
+        currentParsha: newParsha || prev.currentParsha
+      };
+    });
+  }, []);
+
+  const navigateToParsha = useCallback((sefer: string, parsha: string, aliya?: number) => {
+    setState(prev => {
+      console.log('Attempting to navigate to:', { sefer, parsha, aliya });
+      const location = findAmudForParshaAliya(prev.data, sefer, parsha, aliya);
+      console.log('Found location:', location);
+      
+      if (location) {
+        const newParsha: ParshaLocation = { sefer, parsha, aliya };
+        console.log('Navigating to amud:', location.amud);
+        return {
+          ...prev,
+          currentAmud: location.amud,
+          currentParsha: newParsha
+        };
+      }
+      console.log('Location not found');
+      return prev;
+    });
+  }, []);
+
+  const navigateParshaDirection = useCallback((direction: 'next' | 'prev') => {
+    setState(prev => {
+      if (!prev.currentParsha) return prev;
+      
+      const nextParsha = getNextParshaAliya(
+        prev.currentParsha.sefer,
+        prev.currentParsha.parsha,
+        prev.currentParsha.aliya,
+        direction
+      );
+      
+      if (nextParsha) {
+        const location = findAmudForParshaAliya(prev.data, nextParsha.sefer, nextParsha.parsha, nextParsha.aliya);
+        if (location) {
+          return {
+            ...prev,
+            currentAmud: location.amud,
+            currentParsha: nextParsha
+          };
+        }
+      }
+      
+      return prev;
     });
   }, []);
 
@@ -75,6 +151,8 @@ export const useTikkun = () => {
   return {
     ...state,
     navigateAmud,
+    navigateToParsha,
+    navigateParshaDirection,
     toggleNikud,
     adjustWordGap,
     getCurrentAmudData,

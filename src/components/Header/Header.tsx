@@ -1,4 +1,5 @@
 import React from 'react';
+import { ParshaLocation } from '../../utils/navigationUtils';
 import './Header.css';
 
 interface HeaderProps {
@@ -6,6 +7,7 @@ interface HeaderProps {
   totalAmudim: number;
   showNikud: boolean;
   wordGap: number;
+  currentParsha?: ParshaLocation;
   onNavigateAmud: (direction: 'next' | 'prev') => void;
   onToggleNikud: () => void;
   onAdjustWordGap: (change: number) => void;
@@ -16,6 +18,7 @@ export const Header: React.FC<HeaderProps> = ({
   totalAmudim,
   showNikud,
   wordGap,
+  currentParsha,
   onNavigateAmud,
   onToggleNikud,
   onAdjustWordGap
@@ -23,7 +26,40 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <div className="header">
       <div className="header-content">
-        <strong>תִּקּוּן קוֹרִאים</strong>
+        <div className="title-section">
+          <strong>תִּקּוּן קוֹרִאים</strong>
+          {currentParsha && (
+            <div className="parsha-info">
+              <span className="sefer">{currentParsha.sefer}</span>
+              <span className="separator">•</span>
+              <span className="parsha">{currentParsha.parsha}</span>
+              {currentParsha.aliya && (
+                <>
+                  <span className="separator">•</span>
+                  <span className="aliya">עליה {currentParsha.aliya}</span>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+        
+        <div className="navigation-hints">
+          <div className="keyboard-hints">
+            <span>← → עמוד</span>
+            <span>↑ ↓ פרשה</span>
+            <span>N נקוד</span>
+          </div>
+          {currentParsha && (
+            <div className="navigation-status">
+              <span className="status-indicator">🔗</span>
+              <span>ניווט פעיל</span>
+            </div>
+          )}
+        </div>
+        
+        <div className="amud-info">
+          עמוד {currentAmud} מתוך {totalAmudim}
+        </div>
         {/* <div className="navigation">
           <button 
             onClick={() => onNavigateAmud('prev')}

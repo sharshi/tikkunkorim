@@ -36,7 +36,13 @@
   z-index: 1;
 }
 
-.header-content > strong {
+.title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title-section > strong {
   font-size: 1.5rem;
   font-weight: 700;
   background: linear-gradient(135deg, #8b764c 0%, #6b5b3f 100%);
@@ -47,6 +53,81 @@
   text-shadow: none;
   position: relative;
   animation: glow 3s ease-in-out infinite alternate;
+}
+
+.parsha-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #6b5b3f;
+  font-weight: 500;
+}
+
+.parsha-info .sefer {
+  color: #8b764c;
+  font-weight: 600;
+}
+
+.parsha-info .parsha {
+  color: #2c5530;
+  font-weight: 600;
+}
+
+.parsha-info .aliya {
+  color: #7d4a4a;
+  font-weight: 500;
+}
+
+.parsha-info .separator {
+  color: #ccc;
+  font-weight: 300;
+}
+
+.amud-info {
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.navigation-hints {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.keyboard-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: #888;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 6px 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.keyboard-hints span {
+  white-space: nowrap;
+}
+
+.navigation-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #4caf50;
+  background: rgba(76, 175, 80, 0.1);
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.status-indicator {
+  font-size: 12px;
 }
 
 @keyframes glow {
