@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "00d44508cd6d",
+  "strategy": "manual-commit",
+  "branch": "new-design",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/InfiniteAmudScroll/InfiniteAmudScroll.css",
+    "src/components/InfiniteAmudScroll/InfiniteAmudScroll.tsx",
+    "src/components/TextLine/TextLine.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/00/d44508cd6d/0/metadata.json",
+      "transcript": "/00/d44508cd6d/0/full.jsonl",
+      "context": "/00/d44508cd6d/0/context.md",
+      "content_hash": "/00/d44508cd6d/0/content_hash.txt",
+      "prompt": "/00/d44508cd6d/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 14,
+    "cache_creation_tokens": 22118,
+    "cache_read_tokens": 648972,
+    "output_tokens": 939,
+    "api_call_count": 12
+  }
+}
