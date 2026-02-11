@@ -1,0 +1,45 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "1d982fc6c7ba",
+  "strategy": "manual-commit",
+  "branch": "new-design",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "src/App.css",
+    "src/App.tsx",
+    "src/components/AmudDisplay/AmudDisplay.css",
+    "src/components/AmudDisplay/AmudDisplay.tsx",
+    "src/components/Footer/Footer.css",
+    "src/components/Footer/Footer.tsx",
+    "src/components/Header/Header.css",
+    "src/components/Header/Header.tsx",
+    "src/components/InfiniteAmudScroll/InfiniteAmudScroll.css",
+    "src/components/InfiniteAmudScroll/InfiniteAmudScroll.tsx",
+    "src/components/LoadingSpinner/LoadingSpinner.css",
+    "src/components/ParshaNavigation/ParshaNavigation.css",
+    "src/components/ParshaNavigation/ParshaNavigation.tsx",
+    "src/components/TextLine/TextLine.css",
+    "src/components/Toast/Toast.css",
+    "src/i18n/LanguageContext.tsx",
+    "src/i18n/index.ts",
+    "src/i18n/translations.ts",
+    "src/index.css",
+    "src/index.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/1d/982fc6c7ba/0/metadata.json",
+      "transcript": "/1d/982fc6c7ba/0/full.jsonl",
+      "context": "/1d/982fc6c7ba/0/context.md",
+      "content_hash": "/1d/982fc6c7ba/0/content_hash.txt",
+      "prompt": "/1d/982fc6c7ba/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 21,
+    "cache_creation_tokens": 26322,
+    "cache_read_tokens": 2482782,
+    "output_tokens": 1202,
+    "api_call_count": 17
+  }
+}

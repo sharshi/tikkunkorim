@@ -1,0 +1,148 @@
+Implement the following plan:
+
+# Plan: HE/EN Language Toggle + Deep UI Redesign
+
+## Context
+The Tikkun Korim app has all UI text hardcoded in Hebrew, and the visual design (warm browns, glassmorphism, breathing animations, emojis everywhere) feels dated and cluttered. This change adds a Hebrew/English language toggle and completely overhauls the visual design to be clean, minimal, and modern — befitting a Torah study tool.
+
+---
+
+## Part 1: i18n System (zero dependencies)
+
+### New files to create:
+
+**`src/i18n/translations.ts`** — Single dictionary with all UI strings keyed by `he`/`en`
+- Every hardcoded string from Header, Footer, ParshaNavigation, Toast feedback, LoadingSpinner, AmudDisplay, InfiniteAmudScroll
+- An `interpolate(template, values)` helper for strings like `"Page {current} of {total}"`
+- Parsha/sefer/aliya names are NOT in this file — they stay Hebrew always
+
+**`src/i18n/LanguageContext.tsx`** — React context + provider + `useLanguage` hook
+- Stores language in `localStorage` (`tikkun-language` key)
+- Provides: `language`, `toggleLanguage`, `t` (translations object), `dir` ('rtl'|'ltr'), `isRTL`
+- Syncs `dir` and `lang` attributes on `<html>` element
+
+**`src/i18n/index.ts`** — Barrel export
+
+### Wiring:
+- **`src/index.tsx`** — Wrap `<App>` in `<LanguageProvider>`
+- **Every component with UI text** — Call `useLanguage()`, replace hardcoded strings with `t.keyName`
+- **`src/App.tsx`** — Use `dir` from context instead of hardcoded `className="App rtl"`
+
+---
+
+## Part 2: Remove ALL Emojis from Codebase
+
+Every emoji currently in the app gets replaced with CSS or plain text:
+
+| Current | File | Replacement |
+|---------|------|-------------|
+| `🔗` | Header.tsx | 8px green CSS dot |
+| `🔍` | ParshaNavigation.tsx | Remove (placeholder text suffices) |
+| `🔹` | ParshaNavigation.tsx | 6px CSS circle indicator |
+| `🏠` | ParshaNavigation.tsx | Remove (text label "Start" is enough) |
+| `🔄` | ParshaNavigation.tsx | Remove (text label "Reset" is enough) |
+| `✕` | ParshaNavigation.tsx | Keep (Unicode multiplication sign, not emoji) |
+
+---
+
+## Part 3: Visual Redesign
+
+### New color palette (CSS custom properties in App.css):
+```
+--color-bg: #fafaf9          (warm white, paper-like)
+--color-surface: #ffffff      (cards/panels)
+--color-text: #1a1a1a         (near-black)
+--color-text-secondary: #6b7280
+--color-accent: #1e3a5f       (deep scholarly blue)
+--color-accent-light: #e8eef4 (blue tint for selections)
+--color-accent-hover: #2c5282
+--color-border: #e5e7eb
+--color-pasuk: #b91c1c        (red for verse numbers — traditional)
+--color-success: #059669
+--color-error: #dc2626
+```
+
+### What gets removed:
+- Breathing radial overlay animation (App::before)
+- Title glow animation
+- ALL glassmorphism (backdrop-filter: blur) on header, footer, nav, toast
+- Heavy purple-tinted box-shadows
+- Button hover translateY bounce effects
+- Shimmer sweep animation
+- Brown/beige gradient backgrounds
+- Gradient text effects
+
+### What replaces it:
+- Clean flat white surfaces with subtle 1px borders
+- Header/Footer: `background: #fff; border-bottom: 1px solid var(--color-border)`
+- Nav panel: white bg, `box-shadow: 4px 0 16px rgba(0,0,0,0.08)`
+- Buttons: flat `background: var(--color-accent); color: #fff; border-radius: 6px`
+- Hover states: gentle opacity/shade change, no transforms
+- Transitions: `0.2s ease` (simplified)
+- Border-radius: reduced from 12-24px to 6-8px
+
+### RTL/LTR CSS:
+- Use CSS logical properties (`inset-inline-start`, `padding-inline-start`, `margin-inline-end`, etc.)
+- Remove hardcoded `direction: rtl` from UI components (inherit from `<html dir>`)
+- Torah text keeps `direction: rtl !important` always (it's Hebrew scripture)
+- Wrap Hebrew names in `<bdi>` when shown in English UI context
+
+### Language toggle button:
+- Added to Header controls section
+- Shows "EN" when in Hebrew / shows Hebrew characters when in English
+- Simple pill/button style
+
+---
+
+## Part 4: Files to Modify (in order)
+
+1. **Create** `src/i18n/translations.ts`
+2. **Create** `src/i18n/LanguageContext.tsx`
+3. **Create** `src/i18n/index.ts`
+4. **Modify** `src/index.tsx` — add LanguageProvider
+5. **Modify** `src/App.tsx` — useLanguage, dynamic dir, translate toast strings
+6. **Modify** `src/App.css` — full redesign (remove animations, new palette, CSS vars, logical props)
+7. **Modify** `src/index.css` — clean up, dedupe font-face
+8. **Modify** `src/components/Header/Header.tsx` — translations + language toggle button + remove emojis
+9. **Modify** `src/components/Header/Header.css` — full redesign
+10. **Modify** `src/components/Footer/Footer.tsx` — translations
+11. **Modify** `src/components/Footer/Footer.css` — redesign
+12. **Modify** `src/components/ParshaNavigation/ParshaNavigation.tsx` — translations + remove emojis
+13. **Modify** `src/components/ParshaNavigation/ParshaNavigation.css` — redesign + logical props
+14. **Modify** `src/components/Toast/Toast.tsx` — translations
+15. **Modify** `src/components/Toast/Toast.css` — redesign + logical positioning
+16. **Modify** `src/components/LoadingSpinner/LoadingSpinner.tsx` — translations
+17. **Modify** `src/components/LoadingSpinner/LoadingSpinner.css` — accent color
+18. **Modify** `src/components/InfiniteAmudScroll/InfiniteAmudScroll.tsx` — translations
+19. **Modify** `src/components/InfiniteAmudScroll/InfiniteAmudScroll.css` — accent color
+20. **Modify** `src/components/AmudDisplay/AmudDisplay.tsx` — translations
+21. **Modify** `src/components/TextLine/TextLine.css` — accent color for aliya markers, ensure RTL stays
+
+---
+
+## Verification
+1. `npx tsc --noEmit` — zero errors
+2. Dev server loads without console errors
+3. Toggle HE/EN — all UI chrome switches, parsha names stay Hebrew
+4. Layout flips RTL/LTR correctly, Torah text stays RTL in both
+5. Refresh browser — language choice persists (localStorage)
+6. Keyboard navigation still works (arrows, vim keys, N/Space)
+7. Parsha navigation panel opens/closes, search works
+8. Scrolling is smooth (windowed rendering intact)
+9. No emojis visible anywhere in the UI
+10. Mobile layout is clean and usable
+
+
+If you need specific details from before exiting plan mode (like exact code snippets, error messages, or content you generated), read the full transcript at: /Users/shafeh/.REDACTED.jsonl
+
+---
+
+deeply look into using paths for navigations right now theres no change in URLs
+
+---
+
+I want to deploy this on gh pages to whatever way will work like that please do i think is has to be hash based right?
+
+---
+
+[Request interrupted by user for tool use]
