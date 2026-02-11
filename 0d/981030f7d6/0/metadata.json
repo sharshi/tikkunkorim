@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "0d981030f7d6",
+  "session_id": "7d1d969a-02aa-4e29-a7fe-147b21a51646",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-11T16:26:15.627956Z",
+  "branch": "new-design",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".claude/settings.local.json",
+    "src/components/InfiniteAmudScroll/InfiniteAmudScroll.tsx",
+    "src/types/index.ts",
+    "src/utils/navigationUtils.ts"
+  ],
+  "agent": "Claude Code",
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 24162,
+    "cache_read_tokens": 647095,
+    "output_tokens": 1667,
+    "api_call_count": 20
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-11T16:26:15.603024Z",
+    "agent_lines": 0,
+    "human_added": 813,
+    "human_modified": 107,
+    "human_removed": 0,
+    "total_committed": 816,
+    "agent_percentage": 0
+  }
+}
