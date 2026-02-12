@@ -27,16 +27,22 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
   const [searchTerm, setSearchTerm] = useState<string>('');
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Update selected items when current props change
+  // Sync menu with the user's current position when the menu opens.
+  // While browsing the menu, internal state is independent of app state.
   useEffect(() => {
-    if (currentSefer && currentSefer !== selectedSefer) {
-      setSelectedSefer(currentSefer);
-    }
-    if (currentParsha && currentParsha !== selectedParsha) {
+    if (!isOpen) return;
+    if (currentSefer) setSelectedSefer(currentSefer);
+    if (currentParsha) {
       setSelectedParsha(currentParsha);
       setShowAliyos(true);
+    } else {
+      setSelectedParsha('');
+      setShowAliyos(false);
     }
-  }, [currentSefer, currentParsha, selectedSefer, selectedParsha]);
+    setSearchTerm('');
+    // Only re-sync when the menu opens, not when currentSefer/currentParsha change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   // Close menu when clicking outside
   useEffect(() => {

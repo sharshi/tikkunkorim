@@ -49,6 +49,24 @@
   height: 85vh;
 }
 
+/* Flash highlight on the target line after parsha navigation.
+   Background tint + inline-start bar (right side in RTL = where text begins). */
+.target-line-flash > .text-line {
+  animation: flash-highlight 2s ease-out forwards;
+  border-radius: 3px;
+}
+
+@keyframes flash-highlight {
+  0%, 30% {
+    background-color: rgba(30, 58, 95, 0.1);
+    box-shadow: inset -3px 0 0 var(--color-accent);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: inset -3px 0 0 transparent;
+  }
+}
+
 @media (max-width: 768px) {
   .infinite-amud-scroll {
     padding: 100px 10px 20px;

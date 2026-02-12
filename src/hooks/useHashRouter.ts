@@ -1,5 +1,6 @@
 import { useEffect, useRef, MutableRefObject } from 'react';
 import { ParshaLocation } from '../utils/navigationUtils';
+import { parshios } from '../data/parshadata';
 
 interface UseHashRouterOptions {
   currentAmud: number;
@@ -12,14 +13,128 @@ interface UseHashRouterOptions {
 
 type ParsedHash =
   | { type: 'amud'; amud: number }
-  | { type: 'parsha'; sefer: string; parsha: string; aliya?: number }
+  | { type: 'parsha'; parsha: string; aliya?: number }
   | null;
+
+// --- Slug maps: Hebrew <-> English for seforim, parshios, aliyos ---
+
+const seferSlugs: [string, string][] = [
+  ['בראשית', 'bereishis'],
+  ['שמות', 'shemos'],
+  ['ויקרא', 'vayikra'],
+  ['במדבר', 'bamidbar'],
+  ['דברים', 'devarim'],
+];
+
+const parshaSlugs: [string, string][] = [
+  // Bereishis
+  ['בראשית', 'bereishis'],
+  ['נח', 'noach'],
+  ['לך לך', 'lech-lecha'],
+  ['וירא', 'vayeira'],
+  ['חיי שרה', 'chayei-sarah'],
+  ['תולדות', 'toldos'],
+  ['ויצא', 'vayeitzei'],
+  ['וישלח', 'vayishlach'],
+  ['וישב', 'vayeishev'],
+  ['מקץ', 'mikeitz'],
+  ['ויגש', 'vayigash'],
+  ['ויחי', 'vayechi'],
+  // Shemos
+  ['שמות', 'shemos'],
+  ['וארא', 'vaeira'],
+  ['בא', 'bo'],
+  ['בשלח', 'beshalach'],
+  ['יתרו', 'yisro'],
+  ['משפטים', 'mishpatim'],
+  ['תרומה', 'terumah'],
+  ['תצוה', 'tetzaveh'],
+  ['כי תשא', 'ki-sisa'],
+  ['ויקהל', 'vayakhel'],
+  ['פקודי', 'pekudei'],
+  ['ויקהל-פקודי', 'vayakhel-pekudei'],
+  // Vayikra
+  ['ויקרא', 'vayikra'],
+  ['צו', 'tzav'],
+  ['שמיני', 'shemini'],
+  ['תזריע', 'tazria'],
+  ['מצורע', 'metzora'],
+  ['תזריע-מצורע', 'tazria-metzora'],
+  ['אחרי מות', 'acharei-mos'],
+  ['קדושים', 'kedoshim'],
+  ['אחרי מות-קדושים', 'acharei-mos-kedoshim'],
+  ['אמור', 'emor'],
+  ['בהר', 'behar'],
+  ['בחקתי', 'bechukosai'],
+  ['בהר-בחקתי', 'behar-bechukosai'],
+  // Bamidbar
+  ['במדבר', 'bamidbar'],
+  ['נשא', 'naso'],
+  ['בהעלתך', 'behaaloscha'],
+  ['שלח', 'shelach'],
+  ['קרח', 'korach'],
+  ['חקת', 'chukas'],
+  ['בלק', 'balak'],
+  ['חקת-בלק', 'chukas-balak'],
+  ['פנחס', 'pinchas'],
+  ['מטות', 'matos'],
+  ['מסעי', 'masei'],
+  ['מטות-מסעי', 'matos-masei'],
+  // Devarim
+  ['דברים', 'devarim'],
+  ['ואתחנן', 'vaeschanan'],
+  ['עקב', 'eikev'],
+  ['ראה', 'reeh'],
+  ['שופטים', 'shoftim'],
+  ['כי תצא', 'ki-seitzei'],
+  ['כי תבא', 'ki-savo'],
+  ['נצבים', 'nitzavim'],
+  ['וילך', 'vayeilech'],
+  ['נצבים-וילך', 'nitzavim-vayeilech'],
+  ['האזינו', 'haazinu'],
+  ['וזאת הברכה', 'vezos-habracha'],
+];
+
+const aliyaSlugs: [string, string][] = [
+  ['ראשון', 'rishon'],
+  ['שני', 'sheini'],
+  ['שלישי', 'shlishi'],
+  ['רביעי', 'revii'],
+  ['חמישי', 'chamishi'],
+  ['שישי', 'shishi'],
+  ['שביעי', 'shevii'],
+  ['מפטיר', 'maftir'],
+];
+
+// Build lookup maps in both directions
+const hebToSlug = new Map<string, string>();
+const slugToHeb = new Map<string, string>();
+
+for (const list of [seferSlugs, parshaSlugs, aliyaSlugs]) {
+  for (const [heb, en] of list) {
+    hebToSlug.set(heb, en);
+    slugToHeb.set(en, heb);
+  }
+}
+
+// Aliya slug -> 1-based index
+const aliyaSlugToIndex = new Map(aliyaSlugs.map(([, en], i) => [en, i + 1]));
+// 1-based index -> aliya slug
+const aliyaIndexToSlug = new Map(aliyaSlugs.map(([, en], i) => [i + 1, en]));
+
+/** Reverse-lookup: given a parsha name, find which sefer it belongs to. */
+function findSeferForParsha(parsha: string): string | null {
+  for (const [sefer, list] of Object.entries(parshios)) {
+    if ((list as string[]).includes(parsha)) return sefer;
+  }
+  return null;
+}
 
 function parseHash(hash: string): ParsedHash {
   const path = hash.replace(/^#\/?/, '');
   if (!path) return null;
 
-  const segments = path.split('/').map(s => decodeURIComponent(s));
+  const segments = path.split('/').map(s => decodeURIComponent(s).toLowerCase());
 
   // /#/amud/42
   if (segments[0] === 'amud' && segments[1]) {
@@ -30,16 +145,23 @@ function parseHash(hash: string): ParsedHash {
     return null;
   }
 
-  // /#/בראשית/נח  or  /#/בראשית/נח/3
+  // /#/shemos/bo/rishon
+  // Format: sefer-slug / parsha-slug / aliya-slug
   if (segments.length >= 2) {
-    const sefer = segments[0];
-    const parsha = segments[1];
-    const aliya = segments[2] ? parseInt(segments[2], 10) : undefined;
-    if (aliya !== undefined && (isNaN(aliya) || aliya < 1 || aliya > 8)) {
-      // Invalid aliya number -- treat as parsha without aliya
-      return { type: 'parsha', sefer, parsha };
+    const seferHeb = slugToHeb.get(segments[0]);
+    if (!seferHeb) return null;
+    // Verify it's actually a sefer name
+    if (!parshios[seferHeb as keyof typeof parshios]) return null;
+
+    const parshaHeb = slugToHeb.get(segments[1]);
+    if (!parshaHeb || !findSeferForParsha(parshaHeb)) return null;
+
+    let aliya: number | undefined;
+    if (segments[2]) {
+      aliya = aliyaSlugToIndex.get(segments[2]);
+      if (!aliya) return { type: 'parsha', parsha: parshaHeb };
     }
-    return { type: 'parsha', sefer, parsha, aliya };
+    return { type: 'parsha', parsha: parshaHeb, aliya };
   }
 
   return null;
@@ -49,10 +171,13 @@ function buildAmudHash(amud: number): string {
   return `#/amud/${amud}`;
 }
 
-function buildParshaHash(parsha: ParshaLocation): string {
-  let hash = `#/${parsha.sefer}/${parsha.parsha}`;
-  if (parsha.aliya) {
-    hash += `/${parsha.aliya}`;
+function buildParshaHash(loc: ParshaLocation): string {
+  const seferSlug = hebToSlug.get(loc.sefer) || loc.sefer;
+  const parshaSlug = hebToSlug.get(loc.parsha) || loc.parsha;
+  let hash = `#/${seferSlug}/${parshaSlug}`;
+  if (loc.aliya) {
+    const aliyaSlug = aliyaIndexToSlug.get(loc.aliya);
+    if (aliyaSlug) hash += `/${aliyaSlug}`;
   }
   return hash;
 }
@@ -95,7 +220,8 @@ export function useHashRouter({
     if (pending.type === 'amud') {
       navigateAmud(pending.amud);
     } else {
-      navigateToParsha(pending.sefer, pending.parsha, pending.aliya);
+      const sefer = findSeferForParsha(pending.parsha);
+      if (sefer) navigateToParsha(sefer, pending.parsha, pending.aliya);
     }
   }, [isLoading, navigateAmud, navigateToParsha]);
 
@@ -113,7 +239,8 @@ export function useHashRouter({
       if (parsed.type === 'amud') {
         navigateAmud(parsed.amud);
       } else {
-        navigateToParsha(parsed.sefer, parsed.parsha, parsed.aliya);
+        const sefer = findSeferForParsha(parsed.parsha);
+        if (sefer) navigateToParsha(sefer, parsed.parsha, parsed.aliya);
       }
     };
 

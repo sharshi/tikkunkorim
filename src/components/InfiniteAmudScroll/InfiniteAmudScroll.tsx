@@ -84,6 +84,17 @@ export const InfiniteAmudScroll: React.FC<InfiniteAmudScrollProps> = ({
       inline: 'nearest'
     });
 
+    // Flash the target line to show where the parsha/aliya begins
+    if (lineNumber && targetElement !== amudElement) {
+      targetElement.classList.remove('target-line-flash');
+      // Force reflow so re-adding the class restarts the animation
+      void (targetElement as HTMLElement).offsetWidth;
+      targetElement.classList.add('target-line-flash');
+      targetElement.addEventListener('animationend', () => {
+        targetElement.classList.remove('target-line-flash');
+      }, { once: true });
+    }
+
     scrollTimeoutRef.current = window.setTimeout(() => {
       isScrollingRef.current = false;
     }, 150);
