@@ -1,3 +1,4 @@
+/* ── Header shell ───────────────────────────────────── */
 .header {
   position: fixed;
   top: 0;
@@ -5,235 +6,209 @@
   right: 0;
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
-  padding: 12px 24px;
   z-index: 1000;
-  transition: box-shadow var(--transition);
 }
 
 .header-content {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   max-width: 1200px;
   margin: 0 auto;
+  height: 48px;
+  padding: 0 16px;
+  padding-inline-start: 56px; /* room for hamburger */
 }
 
-/* ── Title ──────────────────────────────────────────── */
-.title-section {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.title-section > strong {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--color-accent);
-  letter-spacing: 0.3px;
-}
-
-.parsha-info {
+/* ── Location breadcrumb ───────────────────────────── */
+.header-location {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-text-secondary);
+  min-width: 0;
+  overflow: hidden;
 }
 
-.parsha-info .sefer {
+.header-title {
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--color-accent);
-  font-weight: 600;
-}
-
-.parsha-info .parsha {
-  color: var(--color-text);
-  font-weight: 600;
-}
-
-.parsha-info .aliya {
-  color: var(--color-text-secondary);
-  font-weight: 500;
-}
-
-.parsha-info .separator {
-  color: var(--color-border);
-}
-
-/* ── Navigation hints ───────────────────────────────── */
-.navigation-hints {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.keyboard-hints {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  font-size: 0.72rem;
-  color: var(--color-text-secondary);
-  padding: 4px 10px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  background: var(--color-bg);
-}
-
-.keyboard-hints span {
   white-space: nowrap;
 }
 
-.navigation-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.72rem;
-  color: var(--color-success);
-  padding: 3px 8px;
-  border-radius: var(--radius-md);
-  background: rgba(5, 150, 105, 0.08);
-}
-
-/* Green dot replaces the link emoji */
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-success);
+.header-sep {
+  color: var(--color-border);
   flex-shrink: 0;
 }
 
-/* ── Amud info ──────────────────────────────────────── */
-.amud-info {
-  color: var(--color-text-secondary);
+.header-sefer {
+  color: var(--color-accent);
+  font-weight: 600;
   font-size: 0.85rem;
-  font-weight: 500;
+  white-space: nowrap;
 }
 
-/* ── Controls ───────────────────────────────────────── */
-.controls {
+.header-parsha {
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.header-aliya {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* ── Controls row ──────────────────────────────────── */
+.header-controls {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
-.control-button {
+/* Shared button style */
+.header-btn {
   background: var(--color-accent);
   color: #fff;
   border: none;
-  padding: 6px 14px;
+  padding: 5px 12px;
   cursor: pointer;
   border-radius: var(--radius-md);
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
   transition: background var(--transition);
+  white-space: nowrap;
 }
 
-.control-button:hover {
+.header-btn:hover {
   background: var(--color-accent-hover);
 }
 
-.control-button:active {
+.header-btn:active {
   opacity: 0.9;
 }
 
 /* Language toggle pill */
-.lang-toggle {
+.header-btn-lang {
   background: var(--color-bg);
   color: var(--color-accent);
   border: 1px solid var(--color-accent);
-  min-width: 38px;
+  min-width: 36px;
   text-align: center;
 }
 
-.lang-toggle:hover {
+.header-btn-lang:hover {
   background: var(--color-accent-light);
 }
 
-/* ── Word gap controls ──────────────────────────────── */
-.word-gap-controls {
+/* ── Amud info ─────────────────────────────────────── */
+.header-amud-info {
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── Word gap controls ─────────────────────────────── */
+.header-word-gap {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 8px;
+  gap: 6px;
+  padding: 3px 6px;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   background: var(--color-bg);
 }
 
-.gap-button {
+.header-gap-btn {
   background: var(--color-accent);
   color: #fff;
   border: none;
-  padding: 4px 10px;
+  padding: 3px 8px;
   cursor: pointer;
   border-radius: var(--radius-sm);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   transition: background var(--transition);
-  min-width: 28px;
+  min-width: 26px;
   text-align: center;
 }
 
-.gap-button:hover:not(:disabled) {
+.header-gap-btn:hover:not(:disabled) {
   background: var(--color-accent-hover);
 }
 
-.gap-button:disabled {
+.header-gap-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.gap-display {
-  font-size: 13px;
+.header-gap-val {
+  font-size: 12px;
   font-weight: 500;
   color: var(--color-text-secondary);
-  min-width: 40px;
+  min-width: 28px;
   text-align: center;
 }
 
-/* ── Mobile ─────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .header {
-    padding: 10px 16px;
-  }
+/* ── Keyboard hints ────────────────────────────────── */
+.header-keyboard-hints {
+  display: flex;
+  gap: 10px;
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+  padding: 3px 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
 
+.header-keyboard-hints span {
+  white-space: nowrap;
+}
+
+/* ════════════════════════════════════════════════════
+   RESPONSIVE: mobile-first, progressive disclosure
+   ════════════════════════════════════════════════════ */
+
+/* ── Mobile (<768px) ───────────────────────────────── */
+/* Hide expanded items (title, sefer, amud, word gap, keyboard hints) */
+.header-expanded,
+.header-amud-info,
+.header-word-gap,
+.header-keyboard-hints {
+  display: none;
+}
+
+/* ── Tablet (768px+) ───────────────────────────────── */
+@media (min-width: 768px) {
   .header-content {
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
+    height: 52px;
+    padding: 0 24px;
+    padding-inline-start: 56px;
   }
 
-  .title-section > strong {
-    font-size: 1.2rem;
+  .header-expanded {
+    display: inline;
   }
 
-  .controls {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px;
+  .header-amud-info {
+    display: inline;
   }
 
-  .control-button {
-    padding: 5px 10px;
-    font-size: 12px;
+  .header-word-gap {
+    display: flex;
   }
+}
 
-  .word-gap-controls {
-    padding: 3px 6px;
-    gap: 6px;
-  }
-
-  .gap-button {
-    padding: 3px 8px;
-    font-size: 13px;
-    min-width: 26px;
-  }
-
-  .keyboard-hints {
-    display: none;
+/* ── Desktop (1024px+) ─────────────────────────────── */
+@media (min-width: 1024px) {
+  .header-keyboard-hints {
+    display: flex;
   }
 }

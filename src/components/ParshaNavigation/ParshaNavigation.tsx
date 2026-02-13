@@ -4,93 +4,84 @@ import { useLanguage, interpolate } from '../../i18n';
 import './ParshaNavigation.css';
 
 interface ParshaNavigationProps {
-  onParshaSelect?: (sefer: string, parsha: string, aliya?: number) => void;
-  currentParsha?: string;
-  currentSefer?: string;
-  currentAliya?: number;
   isOpen: boolean;
   onToggle: () => void;
+  onParshaSelect?: (sefer: string, parsha: string, aliya?: number) => void;
+  currentSefer?: string;
+  currentParsha?: string;
+  currentAliya?: number;
+  showNikud: boolean;
+  wordGap: number;
+  onToggleNikud: () => void;
+  onAdjustWordGap: (change: number) => void;
 }
 
 export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
-  onParshaSelect,
-  currentParsha,
-  currentSefer,
-  currentAliya,
   isOpen,
-  onToggle
+  onToggle,
+  onParshaSelect,
+  currentSefer,
+  currentParsha,
+  currentAliya,
+  showNikud,
+  wordGap,
+  onToggleNikud,
+  onAdjustWordGap
 }) => {
   const { t } = useLanguage();
   const [selectedSefer, setSelectedSefer] = useState<string>(currentSefer || seforim[0]);
-  const [selectedParsha, setSelectedParsha] = useState<string>(currentParsha || '');
-  const [showAliyos, setShowAliyos] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [expandedParsha, setExpandedParsha] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Sync menu with the user's current position when the menu opens.
-  // While browsing the menu, internal state is independent of app state.
+  // Sync state when panel opens
   useEffect(() => {
     if (!isOpen) return;
     if (currentSefer) setSelectedSefer(currentSefer);
     if (currentParsha) {
-      setSelectedParsha(currentParsha);
-      setShowAliyos(true);
+      setExpandedParsha(currentParsha);
     } else {
-      setSelectedParsha('');
-      setShowAliyos(false);
+      setExpandedParsha(null);
     }
-    setSearchTerm('');
-    // Only re-sync when the menu opens, not when currentSefer/currentParsha change
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
-  // Close menu when clicking outside
+  // Close on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         if (isOpen) onToggle();
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, onToggle]);
 
-  // Filter parshios based on search term
-  const filteredParshios = selectedSefer
-    ? parshios[selectedSefer as keyof typeof parshios].filter(parsha =>
-        parsha.includes(searchTerm) || parsha.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : [];
-
   const handleSeferSelect = (sefer: string) => {
     setSelectedSefer(sefer);
-    setSelectedParsha('');
-    setShowAliyos(false);
-    setSearchTerm('');
+    setExpandedParsha(null);
   };
 
-  const handleParshaSelect = (parsha: string) => {
-    setSelectedParsha(parsha);
-    setShowAliyos(true);
+  const handleParshaClick = (parsha: string) => {
+    if (expandedParsha === parsha) {
+      // Already expanded -- collapse
+      setExpandedParsha(null);
+    } else {
+      // Expand + navigate to aliya 1
+      setExpandedParsha(parsha);
+      if (onParshaSelect) {
+        onParshaSelect(selectedSefer, parsha);
+      }
+    }
+  };
+
+  const handleAliyaSelect = (parsha: string, aliyaIndex: number) => {
     if (onParshaSelect) {
-      onParshaSelect(selectedSefer, parsha);
+      onParshaSelect(selectedSefer, parsha, aliyaIndex + 1);
     }
+    onToggle(); // close panel
   };
 
-  const handleAliyaSelect = (aliyaIndex: number) => {
-    if (onParshaSelect && selectedParsha) {
-      onParshaSelect(selectedSefer, selectedParsha, aliyaIndex + 1);
-    }
-    onToggle();
-  };
-
-  const getCurrentAliyaData = () => {
-    if (selectedParsha && aliyos[selectedParsha as keyof typeof aliyos]) {
-      return aliyos[selectedParsha as keyof typeof aliyos];
-    }
-    return null;
-  };
+  const seferParshios = parshios[selectedSefer as keyof typeof parshios] || [];
 
   return (
     <>
@@ -99,11 +90,11 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
       <button
         className={`parsha-nav-toggle ${isOpen ? 'active' : ''}`}
         onClick={onToggle}
-        aria-label="Toggle Parsha Navigation"
+        aria-label="Toggle navigation"
       >
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
+        <span className="hamburger-line" />
+        <span className="hamburger-line" />
+        <span className="hamburger-line" />
       </button>
 
       <div
@@ -112,143 +103,101 @@ export const ParshaNavigation: React.FC<ParshaNavigationProps> = ({
       >
         <div className="parsha-nav-header">
           <h2>{t.parshaNavigation}</h2>
-          <button className="close-button" onClick={onToggle}>
-            &#x2715;
-          </button>
+          <button className="close-button" onClick={onToggle}>&#x2715;</button>
         </div>
 
         <div className="parsha-nav-content">
-          {/* Search */}
-          <div className="search-container">
-            <input
-              type="text"
-              placeholder={t.searchParsha}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-            />
+          {/* Sefer pills */}
+          <div className="sefer-pills">
+            {seforim.map((sefer) => (
+              <button
+                key={sefer}
+                className={`sefer-pill ${selectedSefer === sefer ? 'selected' : ''} ${currentSefer === sefer ? 'current' : ''}`}
+                onClick={() => handleSeferSelect(sefer)}
+              >
+                <bdi>{sefer}</bdi>
+              </button>
+            ))}
           </div>
 
-          {/* Current selection */}
-          {(currentSefer || currentParsha) && (
-            <div className="current-selection">
-              <span className="current-label">{t.currentlySelected}</span>
-              <div className="current-path">
-                {currentSefer && <span className="current-sefer"><bdi>{currentSefer}</bdi></span>}
-                {currentParsha && (
-                  <>
-                    <span className="separator">&rsaquo;</span>
-                    <span className="current-parsha"><bdi>{currentParsha}</bdi></span>
-                  </>
-                )}
-                {currentAliya && (
-                  <>
-                    <span className="separator">&rsaquo;</span>
-                    <span className="current-aliya"><bdi>{aliyanames[currentAliya - 1]}</bdi></span>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
+          {/* Parsha accordion list */}
+          <div className="parsha-list">
+            {seferParshios.map((parsha) => {
+              const isExpanded = expandedParsha === parsha;
+              const isCurrent = currentParsha === parsha;
+              const aliyaData = aliyos[parsha as keyof typeof aliyos];
 
-          {/* Seforim */}
-          <div className="nav-section">
-            <h3>{t.sefarim}</h3>
-            <div className="seforim-grid">
-              {seforim.map((sefer) => (
-                <button
-                  key={sefer}
-                  className={`sefer-button ${selectedSefer === sefer ? 'selected' : ''} ${currentSefer === sefer ? 'current' : ''}`}
-                  onClick={() => handleSeferSelect(sefer)}
-                >
-                  <span className="sefer-name"><bdi>{sefer}</bdi></span>
-                  <span className="sefer-count">
-                    {interpolate(t.parshaCount, { count: parshios[sefer as keyof typeof parshios].length })}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Parshios */}
-          {selectedSefer && (
-            <div className="nav-section">
-              <h3>{t.parshios} &mdash; <bdi>{selectedSefer}</bdi></h3>
-              <div className="parshios-grid">
-                {filteredParshios.map((parsha) => (
+              return (
+                <div key={parsha} className={`parsha-item ${isExpanded ? 'expanded' : ''} ${isCurrent ? 'current' : ''}`}>
                   <button
-                    key={parsha}
-                    className={`parsha-button ${selectedParsha === parsha ? 'selected' : ''} ${currentParsha === parsha ? 'current' : ''}`}
-                    onClick={() => handleParshaSelect(parsha)}
+                    className="parsha-item-header"
+                    onClick={() => handleParshaClick(parsha)}
                   >
-                    <span className="parsha-name"><bdi>{parsha}</bdi></span>
-                    {aliyos[parsha as keyof typeof aliyos] && (
-                      <span className="aliya-indicator" />
-                    )}
+                    <span className="parsha-item-name"><bdi>{parsha}</bdi></span>
+                    <span className={`parsha-chevron ${isExpanded ? 'open' : ''}`}>&#x25B8;</span>
                   </button>
-                ))}
-              </div>
-            </div>
-          )}
 
-          {/* Aliyos */}
-          {showAliyos && selectedParsha && getCurrentAliyaData() && (
-            <div className="nav-section">
-              <h3>{t.aliyos} &mdash; <bdi>{selectedParsha}</bdi></h3>
-              <div className="aliyos-grid">
-                {aliyanames.map((aliyaName, index) => {
-                  const aliyaData = getCurrentAliyaData();
-                  const aliyaKey = (index + 1).toString();
-                  const hasData = aliyaData && (aliyaData as any)[aliyaKey];
+                  {isExpanded && aliyaData && (
+                    <div className="aliya-list">
+                      {aliyanames.map((name, idx) => {
+                        const key = (idx + 1).toString();
+                        const range = (aliyaData as any)[key];
+                        if (!range) return null;
 
-                  if (!hasData) return null;
+                        return (
+                          <button
+                            key={idx}
+                            className={`aliya-row ${currentParsha === parsha && currentAliya === idx + 1 ? 'current' : ''}`}
+                            onClick={() => handleAliyaSelect(parsha, idx)}
+                          >
+                            <span className="aliya-row-name"><bdi>{name}</bdi></span>
+                            <span className="aliya-row-range">{range}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
 
-                  return (
-                    <button
-                      key={index}
-                      className={`aliya-button ${currentAliya === index + 1 ? 'current' : ''}`}
-                      onClick={() => handleAliyaSelect(index)}
-                    >
-                      <span className="aliya-name"><bdi>{aliyaName}</bdi></span>
-                      <span className="aliya-range">
-                        {(aliyaData as any)[aliyaKey]}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          {/* Display settings */}
+          <div className="nav-display-settings">
+            <h3>{t.displaySettings}</h3>
 
-          {/* Quick actions */}
-          <div className="nav-section quick-actions">
-            <h3>{t.quickActions}</h3>
-            <div className="quick-actions-grid">
+            <div className="display-setting-row">
+              <span className="display-setting-label">{t.nikud}</span>
               <button
-                className="quick-action-button"
-                onClick={() => {
-                  setSelectedSefer(seforim[0]);
-                  setSelectedParsha(parshios[seforim[0] as keyof typeof parshios][0]);
-                  if (onParshaSelect) {
-                    onParshaSelect(seforim[0], parshios[seforim[0] as keyof typeof parshios][0], 1);
-                  }
-                  onToggle();
-                }}
+                className={`display-toggle ${showNikud ? 'on' : ''}`}
+                onClick={onToggleNikud}
               >
-                {t.start}
-              </button>
-              <button
-                className="quick-action-button"
-                onClick={() => {
-                  setSearchTerm('');
-                  setSelectedSefer(seforim[0]);
-                  setSelectedParsha('');
-                  setShowAliyos(false);
-                }}
-              >
-                {t.reset}
+                {showNikud ? t.on : t.off}
               </button>
             </div>
+
+            {!showNikud && (
+              <div className="display-setting-row">
+                <span className="display-setting-label">{interpolate(t.maxGap, { gap: wordGap })}</span>
+                <div className="display-gap-controls">
+                  <button
+                    className="display-gap-btn"
+                    onClick={() => onAdjustWordGap(-0.5)}
+                    disabled={wordGap <= 1}
+                  >
+                    -
+                  </button>
+                  <span className="display-gap-val">{wordGap.toFixed(1)}</span>
+                  <button
+                    className="display-gap-btn"
+                    onClick={() => onAdjustWordGap(0.5)}
+                    disabled={wordGap >= 6}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

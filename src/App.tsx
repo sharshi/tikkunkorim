@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Header, InfiniteAmudScroll, Footer, ParshaNavigation, Toast } from './components';
+import { Header, InfiniteAmudScroll, ParshaNavigation, Toast } from './components';
 import { useTikkun } from './hooks/useTikkun';
 import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
 import { useHashRouter } from './hooks/useHashRouter';
@@ -104,6 +104,10 @@ function App() {
         currentSefer={currentParsha?.sefer}
         currentParsha={currentParsha?.parsha}
         currentAliya={currentParsha?.aliya}
+        showNikud={showNikud}
+        wordGap={wordGap}
+        onToggleNikud={toggleNikud}
+        onAdjustWordGap={adjustWordGap}
       />
       <Header
         currentAmud={currentAmud}
@@ -125,7 +129,6 @@ function App() {
         targetLine={targetLine}
         onAmudChange={(amud) => navigateAmud(amud)}
       />
-      <Footer />
       <Toast
         message={toastMessage}
         type="success"

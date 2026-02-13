@@ -20,78 +20,78 @@ export const Header: React.FC<HeaderProps> = ({
   showNikud,
   wordGap,
   currentParsha,
-  onNavigateAmud,
   onToggleNikud,
   onAdjustWordGap
 }) => {
   const { t, toggleLanguage } = useLanguage();
 
   return (
-    <div className="header">
+    <header className="header">
       <div className="header-content">
-        <div className="title-section">
-          <strong>{t.appTitle}</strong>
+        {/* Mobile: parsha + aliya only. Tablet+: title . sefer . parsha . aliya */}
+        <div className="header-location">
+          <span className="header-expanded header-title">{t.appTitle}</span>
           {currentParsha && (
-            <div className="parsha-info">
-              <span className="sefer"><bdi>{currentParsha.sefer}</bdi></span>
-              <span className="separator">&middot;</span>
-              <span className="parsha"><bdi>{currentParsha.parsha}</bdi></span>
+            <>
+              <span className="header-expanded header-sep">&middot;</span>
+              <span className="header-expanded header-sefer"><bdi>{currentParsha.sefer}</bdi></span>
+              <span className="header-expanded header-sep">&middot;</span>
+              <span className="header-parsha"><bdi>{currentParsha.parsha}</bdi></span>
               {currentParsha.aliya && (
                 <>
-                  <span className="separator">&middot;</span>
-                  <span className="aliya">{interpolate(t.aliya, { n: currentParsha.aliya })}</span>
+                  <span className="header-sep">&middot;</span>
+                  <span className="header-aliya">{interpolate(t.aliya, { n: currentParsha.aliya })}</span>
                 </>
               )}
-            </div>
+            </>
           )}
         </div>
 
-        <div className="navigation-hints">
-          <div className="keyboard-hints">
-            <span>{t.keyboardHintPage}</span>
-            <span>{t.keyboardHintParsha}</span>
-            <span>{t.keyboardHintNikud}</span>
-          </div>
-          {currentParsha && (
-            <div className="navigation-status">
-              <span className="status-dot" />
-              <span>{t.navigationActive}</span>
-            </div>
-          )}
-        </div>
+        <div className="header-controls">
+          {/* Amud counter -- tablet+ */}
+          <span className="header-amud-info">
+            {interpolate(t.pageOf, { current: currentAmud, total: totalAmudim })}
+          </span>
 
-        <div className="amud-info">
-          {interpolate(t.pageOf, { current: currentAmud, total: totalAmudim })}
-        </div>
-
-        <div className="controls">
-          <button onClick={toggleLanguage} className="control-button lang-toggle">
-            {t.languageToggle}
-          </button>
-          <button onClick={onToggleNikud} className="control-button">
+          {/* Nikud toggle -- always visible */}
+          <button onClick={onToggleNikud} className="header-btn header-btn-nikud">
             {t.nikud} {showNikud ? t.on : t.off}
           </button>
+
+          {/* Word gap -- tablet+ */}
           {!showNikud && (
-            <div className="word-gap-controls">
+            <div className="header-word-gap">
               <button
                 onClick={() => onAdjustWordGap(-0.5)}
                 disabled={wordGap <= 1}
-                className="gap-button"
+                className="header-gap-btn"
               >
                 -
               </button>
-              <span className="gap-display">{interpolate(t.maxGap, { gap: wordGap })}</span>
+              <span className="header-gap-val">{wordGap.toFixed(1)}</span>
               <button
                 onClick={() => onAdjustWordGap(0.5)}
                 disabled={wordGap >= 6}
-                className="gap-button"
+                className="header-gap-btn"
               >
                 +
               </button>
             </div>
           )}
+
+          {/* Language toggle -- always visible */}
+          <button onClick={toggleLanguage} className="header-btn header-btn-lang">
+            {t.languageToggle}
+          </button>
+
+          {/* Keyboard hints -- desktop only */}
+          <div className="header-keyboard-hints">
+            <span>{t.keyboardHintPage}</span>
+            <span>{t.keyboardHintParsha}</span>
+            <span>{t.keyboardHintNikud}</span>
+          </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
