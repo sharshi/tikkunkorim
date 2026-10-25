@@ -22,9 +22,11 @@ function nextprevAli(dir) {
 	$('#texttest').html(getText(currParsha, currAliya, showNikud)).show();
 	window.scrollTo(0, 0);
 	$('#alinm').html(aliyanames[currAliya - 1]);
+	updateShafehReadingLink();
 }
 
 function goback() {
+	document.getElementById('shafeh-reading').hidden = true;
 	$('.spacer').show();
 	if (currView == 'text') {
 		$('#texttest').hide();
@@ -133,6 +135,7 @@ function fillAliyos(parsha) {
 		$('.bn').show();
 		$('#alinm').html(aliyanames[currAliya - 1]);
 		currView = 'text';//??
+		updateShafehReadingLink();
 	})
 	setCookie('latestParsha',currParsha);// Gets latest parsha
 	currView = 'aliyos';
